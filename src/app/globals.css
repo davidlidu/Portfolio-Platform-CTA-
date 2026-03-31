@@ -1,0 +1,47 @@
+/* src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@400;500;600;700&family=Syne:wght@400;700;800&display=swap');
+
+:root {
+  --accent: #10B981;
+  --accent-dim: rgba(16, 185, 129, 0.15);
+  --bg: #0A0A0A;
+  --card: #111111;
+  --card-border: #1E1E1E;
+  --text: #E5E5E5;
+  --text-dim: #888888;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+}
+
+::selection {
+  background: var(--accent);
+  color: #000;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+/* Animación para el pulse del badge */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}

@@ -1,0 +1,84 @@
+// prisma/schema.prisma
+// Esquema de base de datos para la plataforma de portafolios
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Portfolio {
+  id          String   @id @default(cuid())
+  slug        String   @unique // ej: "juan-pablo-rojas"
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Sección Hero
+  heroName     String // Nombre completo (puede tener \n)
+  heroBadge    String @default("Disponible para proyectos")
+  heroRole     String // Rol/título profesional
+  heroPhotoUrl String? // URL foto de perfil
+
+  // Redes sociales (JSON array)
+  // Estructura: [{ icon, label, url }]
+  socials Json @default("[]")
+
+  // Sección Intro
+  introQuote     String @db.Text
+  introTags      String[] // Array de strings ["AI", "Growth", ...]
+  introCta1Label String   @default("Agendar conversación")
+  introCta2Label String   @default("Explorar proyectos")
+
+  // Sección Servicios
+  servicesLabel       String @default("// Servicios")
+  servicesTitle       String @default("Cómo genero valor")
+  servicesDescription String @db.Text
+
+  // Pilares de servicios (JSON array)
+  // Estructura: [{ icon, title, description, items: string[] }]
+  servicePillars Json @default("[]")
+
+  // Sección Enfoque
+  approachLabel       String @default("// Mi enfoque")
+  approachTitle       String
+  approachDescription String @db.Text
+  approachSteps       String[] // Array de strings
+
+  // Sección Contacto
+  contactLabel       String @default("// Conectemos")
+  contactTitle       String @default("¿Tienes un proyecto en mente?")
+  contactDescription String @db.Text
+  contactCta1Label   String @default("Agendar conversación")
+  contactCta2Label   String @default("Guardar contacto")
+
+  // WhatsApp CTA global
+  whatsappNumber  String? // ej: "573001234567"
+  whatsappMessage String? // Mensaje predefinido
+
+  // Footer
+  footerInitials String @default("JP")
+  footerName     String
+
+  // Proyectos
+  projects Project[]
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  title        String
+  description  String   @db.Text
+  tags         String[]
+  thumbnailUrl String?
+  images       String[] // Array de URLs (galería)
+  order        Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
