@@ -51,7 +51,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
     heroBadge: portfolio?.heroBadge || "Disponible para proyectos",
     heroRole: portfolio?.heroRole || "",
     heroPhotoUrl: portfolio?.heroPhotoUrl || null as string | null,
-    socials: (portfolio?.socials as Social[]) || [] as Social[],
+    socials: (portfolio?.socials as unknown as Social[]) || [] as Social[],
     introQuote: portfolio?.introQuote || "",
     introTags: portfolio?.introTags || [] as string[],
     introCta1Label: portfolio?.introCta1Label || "Agendar conversación",
@@ -59,7 +59,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
     servicesLabel: portfolio?.servicesLabel || "// Servicios",
     servicesTitle: portfolio?.servicesTitle || "Cómo genero valor",
     servicesDescription: portfolio?.servicesDescription || "",
-    servicePillars: (portfolio?.servicePillars as ServicePillar[]) || [] as ServicePillar[],
+    servicePillars: (portfolio?.servicePillars as unknown as ServicePillar[]) || [] as ServicePillar[],
     approachLabel: portfolio?.approachLabel || "// Mi enfoque",
     approachTitle: portfolio?.approachTitle || "",
     approachDescription: portfolio?.approachDescription || "",
@@ -270,11 +270,10 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${
-              tab === t.id
-                ? "text-accent border-accent"
-                : "text-text-dim border-transparent hover:text-white"
-            }`}
+            className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${tab === t.id
+              ? "text-accent border-accent"
+              : "text-text-dim border-transparent hover:text-white"
+              }`}
           >
             {t.label}
           </button>
@@ -359,14 +358,12 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               <button
                 type="button"
                 onClick={() => updateForm("isPublished", !form.isPublished)}
-                className={`relative w-12 h-6 rounded-full transition-colors ${
-                  form.isPublished ? "bg-accent" : "bg-[#2A2A2A]"
-                }`}
+                className={`relative w-12 h-6 rounded-full transition-colors ${form.isPublished ? "bg-accent" : "bg-[#2A2A2A]"
+                  }`}
               >
                 <span
-                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
-                    form.isPublished ? "translate-x-6" : ""
-                  }`}
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${form.isPublished ? "translate-x-6" : ""
+                    }`}
                 />
               </button>
               <span className="text-sm text-text-main">

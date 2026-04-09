@@ -1,15 +1,13 @@
 // src/middleware.ts
-// Middleware para proteger rutas del admin
-
 import { withAuth } from "next-auth/middleware";
 
 export default withAuth({
   pages: {
-    signIn: "/admin/login",
+    signIn: "/admin/login", // NextAuth sabe que NO debe bloquear esta página
   },
 });
 
-// Proteger todas las rutas /admin excepto /admin/login
+// Proteger todas las rutas dentro de /admin
 export const config = {
-  matcher: ["/admin/((?!login).*)"],
+  matcher: ["/admin/:path*"],
 };

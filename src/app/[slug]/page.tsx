@@ -69,8 +69,8 @@ export default async function PortfolioPage({
       }`
     : "#contacto";
 
-  const socials = portfolio.socials as Social[];
-  const pillars = portfolio.servicePillars as ServicePillar[];
+  const socials = portfolio.socials as unknown as Social[];
+  const pillars = portfolio.servicePillars as unknown as ServicePillar[];
 
   return (
     <div
