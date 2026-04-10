@@ -1,52 +1,40 @@
 // src/lib/upload.ts
-// Manejo de uploads de imágenes al sistema de archivos local
+import { v2 as cloudinary } from "cloudinary";
 
-import fs from "fs/promises";
-import path from "path";
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-const ALLOWED_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-];
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const MAX_SIZE = 5 * 1024 * 1024;
 
-export async function saveImage(
-  file: File,
-  folder: string
-): Promise<string> {
-  // Validar tipo
+export async function saveImage(file: File, folder: string): Promise<string> {
   if (!ALLOWED_TYPES.includes(file.type)) {
-    throw new Error(
-      `Tipo de archivo no permitido: ${file.type}. Usa JPG, PNG, WebP o GIF.`
-    );
+    throw new Error(`Tipo no permitido: ${file.type}`);
   }
-
-  // Validar tamaño
   if (file.size > MAX_SIZE) {
-    throw new Error("La imagen excede el tamaño máximo de 5MB.");
+    throw new Error("La imagen excede 5MB.");
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  // Nombre único: timestamp + nombre sanitizado
-  const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "-").toLowerCase();
-  const filename = `${Date.now()}-${safeName}`;
-  const dir = path.join(process.cwd(), "public", "uploads", folder);
 
-  await fs.mkdir(dir, { recursive: true });
-  await fs.writeFile(path.join(dir, filename), buffer);
-
-  return `/uploads/${folder}/${filename}`;
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream({ folder: `portfolio/${folder}` }, (error, result) => {
+        if (error || !result) return reject(error);
+        resolve(result.secure_url);
+      })
+      .end(buffer);
+  });
 }
 
 export async function deleteImage(imageUrl: string): Promise<void> {
-  if (!imageUrl || !imageUrl.startsWith("/uploads/")) return;
-
-  const filePath = path.join(process.cwd(), "public", imageUrl);
-  try {
-    await fs.unlink(filePath);
-  } catch {
-    // Archivo ya no existe, ignorar
-  }
+  if (!imageUrl || !imageUrl.includes("cloudinary.com")) return;
+  // Extraer public_id de la URL
+  const parts = imageUrl.split("/");
+  const file = parts[parts.length - 1].split(".")[0];
+  const folder = parts[parts.length - 2];
+  await cloudinary.uploader.destroy(`${folder}/${file}`);
 }
