@@ -69,7 +69,7 @@ export default function IntroSection({
           {cta1Label} <span>→</span>
         </a>
         <a
-          href={whatsappUrl}
+          href="#portafolio"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 border border-[#333] hover:border-accent text-text-main hover:text-accent px-7 py-3.5 rounded-full transition-all text-sm font-semibold"
