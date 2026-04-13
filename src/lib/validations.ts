@@ -87,6 +87,7 @@ export const projectSchema = z.object({
   tags: z.array(z.string()).default([]),
   thumbnailUrl: z.string().nullable().optional(),
   images: z.array(z.string()).default([]),
+  projectUrl: z.string().nullable().optional(),
   order: z.number().int().default(0),
 });
 

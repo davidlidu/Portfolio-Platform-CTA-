@@ -208,10 +208,10 @@ export default function HeroSection({
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.4, duration: 0.8 }}
-        className="absolute top-20 left-1/2 -translate-x-1/2 z-[12]"
+        className="absolute top-20 inset-x-0 mx-auto w-fit max-w-[90vw] z-[12] px-4"
       >
-        <div className="inline-flex items-center gap-2 bg-accent/[0.08] border border-accent/20 rounded-full px-4 py-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-dot" />
+        <div className="inline-flex items-center justify-center gap-2 bg-accent/[0.08] border border-accent/20 rounded-full px-4 py-1.5 text-center">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-dot shrink-0" />
           <span className="text-accent text-xs font-semibold uppercase tracking-wider">
             {badge}
           </span>

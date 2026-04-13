@@ -31,6 +31,7 @@ export default function ProjectForm({
     tags: project?.tags || ([] as string[]),
     thumbnailUrl: project?.thumbnailUrl || (null as string | null),
     images: project?.images || ([] as string[]),
+    projectUrl: project?.projectUrl || "",
     order: project?.order || 0,
   });
 
@@ -132,6 +133,16 @@ export default function ProjectForm({
             onChange={(e) => updateForm("description", e.target.value)}
             className={inputClass}
             placeholder="Descripción detallada del proyecto..."
+          />
+        </div>
+
+        <div>
+          <label className={labelClass}>Enlace del proyecto (opcional)</label>
+          <input
+            value={form.projectUrl}
+            onChange={(e) => updateForm("projectUrl", e.target.value)}
+            className={inputClass}
+            placeholder="https://ejemplo.com"
           />
         </div>
 

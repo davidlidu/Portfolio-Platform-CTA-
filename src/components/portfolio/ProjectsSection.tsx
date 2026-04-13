@@ -99,9 +99,23 @@ function ProjectModal({
               </span>
             ))}
           </div>
-          <p className="text-text-dim text-sm leading-relaxed whitespace-pre-line">
+          <p className="text-text-dim text-sm leading-relaxed whitespace-pre-line mb-6">
             {project.description}
           </p>
+
+          {(project as any).projectUrl && (
+            <a
+              href={(project as any).projectUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-accent font-semibold text-sm hover:underline group/link"
+            >
+              Ver proyecto completo
+              <span className="group-hover/link:translate-x-1 transition-transform">
+                →
+              </span>
+            </a>
+          )}
         </div>
 
         {/* Cerrar */}
