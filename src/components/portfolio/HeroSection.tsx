@@ -123,7 +123,7 @@ export default function HeroSection({
           transition={{ duration: 1.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="font-syne font-extrabold text-white uppercase text-center whitespace-nowrap"
           style={{
-            fontSize: "clamp(3.5rem, 13vw, 13rem)",
+            fontSize: "clamp(2.5rem, 10vw, 10rem)",
             letterSpacing: "-0.04em",
             lineHeight: 0.9,
           }}
