@@ -6,9 +6,6 @@ const translations = {
     // Sidebar
     "nav.dashboard": "Dashboard",
     "nav.logout": "Cerrar sesión",
-    "nav.language_toggle": "English",
-    "nav.palette_title": "Paleta de Marca",
-    "nav.palette_btn": "Paleta de colores",
 
     // Dashboard
     "dash.title": "Portafolios",
@@ -29,7 +26,7 @@ const translations = {
     "dash.action.delete_confirm": "Sí, eliminar",
     "dash.action.cancel": "Cancelar",
 
-    // Portfolio Form
+    // Portfolio Form — header & tabs
     "form.create_title": "Crear portafolio",
     "form.edit_title": "Editar portafolio",
     "form.save": "Guardar cambios",
@@ -44,6 +41,67 @@ const translations = {
     "form.tab.services": "Servicios",
     "form.tab.approach": "Enfoque",
     "form.tab.contact": "Contacto",
+
+    // Tab BÁSICO
+    "basic.heroName": "Nombre completo (usa Enter para saltos)",
+    "basic.slug": "Slug / URL",
+    "basic.badge": "Badge de disponibilidad",
+    "basic.role": "Rol / Título (usa Enter para saltos)",
+    "basic.photo": "Foto de perfil",
+    "basic.initials": "Iniciales (footer)",
+    "basic.footerName": "Nombre footer",
+    "basic.published": "Publicado",
+    "basic.draft": "Borrador",
+    "basic.palette": "Color de marca del portafolio",
+    "basic.palette_hint": "Se aplica en el portafolio público",
+
+    // Tab WHATSAPP
+    "wa.number": "Número de WhatsApp (con código de país, solo dígitos)",
+    "wa.number_hint": "Ejemplo: 573001234567 (57 = Colombia)",
+    "wa.message": "Mensaje predefinido del CTA",
+    "wa.chars": "caracteres",
+    "wa.preview": "Preview del link",
+    "wa.cta1": "Label botón CTA Intro",
+    "wa.cta2": "Label botón CTA Intro (secundario)",
+    "wa.cta3": "Label botón CTA Contacto",
+    "wa.cta4": "Label botón CTA Contacto (secundario)",
+
+    // Tab REDES
+    "socials.network": "Red",
+    "socials.remove": "Eliminar",
+    "socials.platform": "Plataforma",
+    "socials.label": "Label visible",
+    "socials.url": "URL",
+    "socials.add": "+ Agregar red social",
+
+    // Tab INTRO
+    "intro.quote": "Frase principal",
+    "intro.tags": "Tags",
+
+    // Tab SERVICIOS
+    "services.section_label": "Etiqueta de sección",
+    "services.section_title": "Título de sección",
+    "services.description": "Descripción general",
+    "services.pillars": "Pilares",
+    "services.pillar": "PILAR",
+    "services.pillar_remove": "Eliminar",
+    "services.icon": "Icono",
+    "services.title": "Título",
+    "services.pillar_desc": "Descripción",
+    "services.pillar_tags": "Tags del pilar",
+    "services.add_pillar": "+ Agregar pilar",
+
+    // Tab ENFOQUE
+    "approach.label": "Etiqueta",
+    "approach.title": "Título (usa Enter para saltos)",
+    "approach.description": "Descripción",
+    "approach.steps": "Pasos",
+    "approach.add_step": "+ Agregar paso",
+
+    // Tab CONTACTO
+    "contact.label": "Etiqueta",
+    "contact.title": "Título",
+    "contact.description": "Descripción",
 
     // Projects section in portfolio form
     "projects.title": "Proyectos",
@@ -60,9 +118,6 @@ const translations = {
     // Sidebar
     "nav.dashboard": "Dashboard",
     "nav.logout": "Sign out",
-    "nav.language_toggle": "Español",
-    "nav.palette_title": "Brand Palette",
-    "nav.palette_btn": "Color palette",
 
     // Dashboard
     "dash.title": "Portfolios",
@@ -83,7 +138,7 @@ const translations = {
     "dash.action.delete_confirm": "Yes, delete",
     "dash.action.cancel": "Cancel",
 
-    // Portfolio Form
+    // Portfolio Form — header & tabs
     "form.create_title": "Create portfolio",
     "form.edit_title": "Edit portfolio",
     "form.save": "Save changes",
@@ -98,6 +153,67 @@ const translations = {
     "form.tab.services": "Services",
     "form.tab.approach": "Approach",
     "form.tab.contact": "Contact",
+
+    // Tab BASIC
+    "basic.heroName": "Full name (use Enter for line breaks)",
+    "basic.slug": "Slug / URL",
+    "basic.badge": "Availability badge",
+    "basic.role": "Role / Title (use Enter for line breaks)",
+    "basic.photo": "Profile photo",
+    "basic.initials": "Initials (footer)",
+    "basic.footerName": "Footer name",
+    "basic.published": "Published",
+    "basic.draft": "Draft",
+    "basic.palette": "Portfolio brand color",
+    "basic.palette_hint": "Applied on the public portfolio",
+
+    // Tab WHATSAPP
+    "wa.number": "WhatsApp number (with country code, digits only)",
+    "wa.number_hint": "Example: 573001234567 (57 = Colombia)",
+    "wa.message": "Default CTA message",
+    "wa.chars": "characters",
+    "wa.preview": "Link preview",
+    "wa.cta1": "Intro CTA button label",
+    "wa.cta2": "Intro CTA button label (secondary)",
+    "wa.cta3": "Contact CTA button label",
+    "wa.cta4": "Contact CTA button label (secondary)",
+
+    // Tab SOCIALS
+    "socials.network": "Network",
+    "socials.remove": "Remove",
+    "socials.platform": "Platform",
+    "socials.label": "Display label",
+    "socials.url": "URL",
+    "socials.add": "+ Add social network",
+
+    // Tab INTRO
+    "intro.quote": "Main quote",
+    "intro.tags": "Tags",
+
+    // Tab SERVICES
+    "services.section_label": "Section label",
+    "services.section_title": "Section title",
+    "services.description": "General description",
+    "services.pillars": "Pillars",
+    "services.pillar": "PILLAR",
+    "services.pillar_remove": "Remove",
+    "services.icon": "Icon",
+    "services.title": "Title",
+    "services.pillar_desc": "Description",
+    "services.pillar_tags": "Pillar tags",
+    "services.add_pillar": "+ Add pillar",
+
+    // Tab APPROACH
+    "approach.label": "Label",
+    "approach.title": "Title (use Enter for line breaks)",
+    "approach.description": "Description",
+    "approach.steps": "Steps",
+    "approach.add_step": "+ Add step",
+
+    // Tab CONTACT
+    "contact.label": "Label",
+    "contact.title": "Title",
+    "contact.description": "Description",
 
     // Projects section in portfolio form
     "projects.title": "Projects",

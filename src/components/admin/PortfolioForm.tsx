@@ -9,6 +9,7 @@ import ImageUploader from "./ImageUploader";
 import TagInput from "./TagInput";
 import { useAdmin } from "@/contexts/AdminContext";
 import type { TranslationKey } from "@/lib/translations";
+import { PALETTES } from "@/lib/palettes";
 
 // Iconos de redes sociales disponibles
 const SOCIAL_OPTIONS = [
@@ -76,6 +77,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
     whatsappMessage: portfolio?.whatsappMessage || "",
     footerInitials: portfolio?.footerInitials || "",
     footerName: portfolio?.footerName || "",
+    paletteId: portfolio?.paletteId || "emerald",
   });
 
   // Auto-generar slug desde el nombre
@@ -289,7 +291,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
         {tab === "basic" && (
           <div className="space-y-6 max-w-2xl">
             <div>
-              <label className={labelClass}>Nombre completo (usa Enter para saltos)</label>
+              <label className={labelClass}>{t("basic.heroName")}</label>
               <textarea
                 rows={2}
                 value={form.heroName}
@@ -300,7 +302,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
             </div>
             <div>
               <label className={labelClass}>
-                Slug / URL{" "}
+                {t("basic.slug")}{" "}
                 {form.slug && (
                   <span className="text-accent font-normal normal-case">
                     — {baseUrl}/{form.slug}
@@ -317,7 +319,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               />
             </div>
             <div>
-              <label className={labelClass}>Badge de disponibilidad</label>
+              <label className={labelClass}>{t("basic.badge")}</label>
               <input
                 value={form.heroBadge}
                 onChange={(e) => updateForm("heroBadge", e.target.value)}
@@ -325,7 +327,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               />
             </div>
             <div>
-              <label className={labelClass}>Rol / Título (usa Enter para saltos)</label>
+              <label className={labelClass}>{t("basic.role")}</label>
               <textarea
                 rows={2}
                 value={form.heroRole}
@@ -338,10 +340,10 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               value={form.heroPhotoUrl}
               onChange={(url) => updateForm("heroPhotoUrl", url)}
               folder={form.slug || "temp"}
-              label="Foto de perfil"
+              label={t("basic.photo")}
             />
             <div>
-              <label className={labelClass}>Iniciales (footer)</label>
+              <label className={labelClass}>{t("basic.initials")}</label>
               <input
                 value={form.footerInitials}
                 onChange={(e) => updateForm("footerInitials", e.target.value)}
@@ -350,7 +352,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               />
             </div>
             <div>
-              <label className={labelClass}>Nombre footer</label>
+              <label className={labelClass}>{t("basic.footerName")}</label>
               <input
                 value={form.footerName}
                 onChange={(e) => updateForm("footerName", e.target.value)}
@@ -361,17 +363,46 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               <button
                 type="button"
                 onClick={() => updateForm("isPublished", !form.isPublished)}
-                className={`relative w-12 h-6 rounded-full transition-colors ${form.isPublished ? "bg-accent" : "bg-[#2A2A2A]"
-                  }`}
+                className={`relative w-12 h-6 rounded-full transition-colors ${form.isPublished ? "bg-accent" : "bg-[#2A2A2A]"}`}
               >
                 <span
-                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${form.isPublished ? "translate-x-6" : ""
-                    }`}
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${form.isPublished ? "translate-x-6" : ""}`}
                 />
               </button>
               <span className="text-sm text-text-main">
-                {form.isPublished ? "Publicado" : "Borrador"}
+                {form.isPublished ? t("basic.published") : t("basic.draft")}
               </span>
+            </div>
+
+            {/* Paleta de color del portafolio */}
+            <div className="border-t border-card-border pt-6">
+              <label className={labelClass}>{t("basic.palette")}</label>
+              <p className="text-text-dim text-xs mb-4">{t("basic.palette_hint")}</p>
+              <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                {PALETTES.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => updateForm("paletteId", p.id)}
+                    title={p.name}
+                    className={`relative w-full aspect-square rounded-lg border-2 transition-all ${
+                      form.paletteId === p.id
+                        ? "border-white scale-110 shadow-lg"
+                        : "border-transparent hover:border-white/40 hover:scale-105"
+                    }`}
+                    style={{ backgroundColor: p.preview }}
+                  >
+                    {form.paletteId === p.id && (
+                      <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold drop-shadow">
+                        ✓
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+              <p className="text-text-dim text-xs mt-3">
+                {PALETTES.find((p) => p.id === form.paletteId)?.name}
+              </p>
             </div>
           </div>
         )}
@@ -380,7 +411,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
         {tab === "whatsapp" && (
           <div className="space-y-6 max-w-2xl">
             <div>
-              <label className={labelClass}>Número de WhatsApp (con código de país, solo dígitos)</label>
+              <label className={labelClass}>{t("wa.number")}</label>
               <input
                 value={form.whatsappNumber}
                 onChange={(e) =>
@@ -389,12 +420,10 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                 className={inputClass}
                 placeholder="573001234567"
               />
-              <p className="text-text-dim/50 text-xs mt-1">
-                Ejemplo: 573001234567 (57 = Colombia)
-              </p>
+              <p className="text-text-dim/50 text-xs mt-1">{t("wa.number_hint")}</p>
             </div>
             <div>
-              <label className={labelClass}>Mensaje predefinido del CTA</label>
+              <label className={labelClass}>{t("wa.message")}</label>
               <textarea
                 rows={3}
                 value={form.whatsappMessage}
@@ -403,12 +432,12 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                 placeholder="Hola, me interesa conocer más sobre tus servicios."
               />
               <p className="text-text-dim/50 text-xs mt-1">
-                {(form.whatsappMessage || "").length} caracteres
+                {(form.whatsappMessage || "").length} {t("wa.chars")}
               </p>
             </div>
             {form.whatsappNumber && (
               <div className="bg-[#1A1A1A] rounded-lg p-4 border border-[#2A2A2A]">
-                <p className={labelClass}>Preview del link</p>
+                <p className={labelClass}>{t("wa.preview")}</p>
                 <a
                   href={`https://wa.me/${form.whatsappNumber}?text=${encodeURIComponent(form.whatsappMessage || "")}`}
                   target="_blank"
@@ -420,7 +449,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               </div>
             )}
             <div>
-              <label className={labelClass}>Label botón CTA Intro</label>
+              <label className={labelClass}>{t("wa.cta1")}</label>
               <input
                 value={form.introCta1Label}
                 onChange={(e) => updateForm("introCta1Label", e.target.value)}
@@ -428,7 +457,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               />
             </div>
             <div>
-              <label className={labelClass}>Label botón CTA Intro (secundario)</label>
+              <label className={labelClass}>{t("wa.cta2")}</label>
               <input
                 value={form.introCta2Label}
                 onChange={(e) => updateForm("introCta2Label", e.target.value)}
@@ -436,7 +465,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               />
             </div>
             <div>
-              <label className={labelClass}>Label botón CTA Contacto</label>
+              <label className={labelClass}>{t("wa.cta3")}</label>
               <input
                 value={form.contactCta1Label}
                 onChange={(e) => updateForm("contactCta1Label", e.target.value)}
@@ -444,7 +473,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               />
             </div>
             <div>
-              <label className={labelClass}>Label botón CTA Contacto (secundario)</label>
+              <label className={labelClass}>{t("wa.cta4")}</label>
               <input
                 value={form.contactCta2Label}
                 onChange={(e) => updateForm("contactCta2Label", e.target.value)}
@@ -463,18 +492,18 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                 className="bg-[#1A1A1A] rounded-lg p-4 border border-[#2A2A2A] space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-text-dim text-xs font-semibold">Red {i + 1}</span>
+                  <span className="text-text-dim text-xs font-semibold">{t("socials.network")} {i + 1}</span>
                   <button
                     type="button"
                     onClick={() => removeSocial(i)}
                     className="text-red-400/60 hover:text-red-400 text-xs transition-colors"
                   >
-                    Eliminar
+                    {t("socials.remove")}
                   </button>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className={labelClass}>Plataforma</label>
+                    <label className={labelClass}>{t("socials.platform")}</label>
                     <select
                       value={social.icon}
                       onChange={(e) => updateSocial(i, "icon", e.target.value)}
@@ -488,7 +517,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                     </select>
                   </div>
                   <div>
-                    <label className={labelClass}>Label visible</label>
+                    <label className={labelClass}>{t("socials.label")}</label>
                     <input
                       value={social.label}
                       onChange={(e) => updateSocial(i, "label", e.target.value)}
@@ -497,7 +526,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                   </div>
                 </div>
                 <div>
-                  <label className={labelClass}>URL</label>
+                  <label className={labelClass}>{t("socials.url")}</label>
                   <input
                     value={social.url}
                     onChange={(e) => updateSocial(i, "url", e.target.value)}
@@ -513,7 +542,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                 onClick={addSocial}
                 className="w-full py-3 border-2 border-dashed border-card-border rounded-lg text-text-dim text-sm hover:border-accent/50 hover:text-accent transition-colors"
               >
-                + Agregar red social
+                {t("socials.add")}
               </button>
             )}
           </div>
@@ -523,7 +552,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
         {tab === "intro" && (
           <div className="space-y-6 max-w-2xl">
             <div>
-              <label className={labelClass}>Frase principal</label>
+              <label className={labelClass}>{t("intro.quote")}</label>
               <textarea
                 rows={3}
                 value={form.introQuote}
@@ -546,7 +575,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
           <div className="space-y-6">
             <div className="max-w-2xl space-y-4">
               <div>
-                <label className={labelClass}>Etiqueta de sección</label>
+                <label className={labelClass}>{t("services.section_label")}</label>
                 <input
                   value={form.servicesLabel}
                   onChange={(e) => updateForm("servicesLabel", e.target.value)}
@@ -554,7 +583,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                 />
               </div>
               <div>
-                <label className={labelClass}>Título de sección</label>
+                <label className={labelClass}>{t("services.section_title")}</label>
                 <input
                   value={form.servicesTitle}
                   onChange={(e) => updateForm("servicesTitle", e.target.value)}
@@ -562,7 +591,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                 />
               </div>
               <div>
-                <label className={labelClass}>Descripción general</label>
+                <label className={labelClass}>{t("services.description")}</label>
                 <textarea
                   rows={3}
                   value={form.servicesDescription}
@@ -574,7 +603,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
 
             <div className="border-t border-card-border pt-6">
               <h3 className="text-white font-semibold text-sm mb-4">
-                Pilares ({form.servicePillars.length}/3)
+                {t("services.pillars")} ({form.servicePillars.length}/3)
               </h3>
               <div className="space-y-4">
                 {form.servicePillars.map((pillar, i) => (
@@ -583,18 +612,18 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                     className="bg-[#1A1A1A] rounded-lg p-5 border border-[#2A2A2A] space-y-4"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-accent text-xs font-bold">PILAR {i + 1}</span>
+                      <span className="text-accent text-xs font-bold">{t("services.pillar")} {i + 1}</span>
                       <button
                         type="button"
                         onClick={() => removePillar(i)}
                         className="text-red-400/60 hover:text-red-400 text-xs transition-colors"
                       >
-                        Eliminar
+                        {t("services.pillar_remove")}
                       </button>
                     </div>
                     <div className="grid grid-cols-[80px_1fr] gap-3">
                       <div>
-                        <label className={labelClass}>Icono</label>
+                        <label className={labelClass}>{t("services.icon")}</label>
                         <input
                           value={pillar.icon}
                           onChange={(e) => updatePillar(i, "icon", e.target.value)}
@@ -603,7 +632,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                         />
                       </div>
                       <div>
-                        <label className={labelClass}>Título</label>
+                        <label className={labelClass}>{t("services.title")}</label>
                         <input
                           value={pillar.title}
                           onChange={(e) => updatePillar(i, "title", e.target.value)}
@@ -612,7 +641,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                       </div>
                     </div>
                     <div>
-                      <label className={labelClass}>Descripción</label>
+                      <label className={labelClass}>{t("services.pillar_desc")}</label>
                       <textarea
                         rows={3}
                         value={pillar.description}
@@ -623,7 +652,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                     <TagInput
                       values={pillar.items}
                       onChange={(items) => updatePillar(i, "items", items)}
-                      label="Tags del pilar"
+                      label={t("services.pillar_tags")}
                     />
                   </div>
                 ))}
@@ -633,7 +662,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                     onClick={addPillar}
                     className="w-full py-3 border-2 border-dashed border-card-border rounded-lg text-text-dim text-sm hover:border-accent/50 hover:text-accent transition-colors"
                   >
-                    + Agregar pilar
+                    {t("services.add_pillar")}
                   </button>
                 )}
               </div>
@@ -645,7 +674,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
         {tab === "approach" && (
           <div className="space-y-6 max-w-2xl">
             <div>
-              <label className={labelClass}>Etiqueta</label>
+              <label className={labelClass}>{t("approach.label")}</label>
               <input
                 value={form.approachLabel}
                 onChange={(e) => updateForm("approachLabel", e.target.value)}
@@ -653,7 +682,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               />
             </div>
             <div>
-              <label className={labelClass}>Título (usa Enter para saltos)</label>
+              <label className={labelClass}>{t("approach.title")}</label>
               <textarea
                 rows={2}
                 value={form.approachTitle}
@@ -662,7 +691,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               />
             </div>
             <div>
-              <label className={labelClass}>Descripción</label>
+              <label className={labelClass}>{t("approach.description")}</label>
               <textarea
                 rows={3}
                 value={form.approachDescription}
@@ -673,7 +702,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
 
             <div className="border-t border-card-border pt-6">
               <h3 className="text-white font-semibold text-sm mb-4">
-                Pasos ({form.approachSteps.length}/6)
+                {t("approach.steps")} ({form.approachSteps.length}/6)
               </h3>
               <div className="space-y-3">
                 {form.approachSteps.map((step, i) => (
@@ -719,7 +748,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                     onClick={addStep}
                     className="w-full py-3 border-2 border-dashed border-card-border rounded-lg text-text-dim text-sm hover:border-accent/50 hover:text-accent transition-colors"
                   >
-                    + Agregar paso
+                    {t("approach.add_step")}
                   </button>
                 )}
               </div>
@@ -731,7 +760,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
         {tab === "contact" && (
           <div className="space-y-6 max-w-2xl">
             <div>
-              <label className={labelClass}>Etiqueta</label>
+              <label className={labelClass}>{t("contact.label")}</label>
               <input
                 value={form.contactLabel}
                 onChange={(e) => updateForm("contactLabel", e.target.value)}
@@ -739,7 +768,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               />
             </div>
             <div>
-              <label className={labelClass}>Título</label>
+              <label className={labelClass}>{t("contact.title")}</label>
               <input
                 value={form.contactTitle}
                 onChange={(e) => updateForm("contactTitle", e.target.value)}
@@ -747,7 +776,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               />
             </div>
             <div>
-              <label className={labelClass}>Descripción</label>
+              <label className={labelClass}>{t("contact.description")}</label>
               <textarea
                 rows={3}
                 value={form.contactDescription}

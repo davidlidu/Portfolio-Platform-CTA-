@@ -8,6 +8,7 @@ import type { Social, ServicePillar } from "@/types";
 
 import Navbar from "@/components/portfolio/Navbar";
 import HeroSection from "@/components/portfolio/HeroSection";
+import PortfolioTheme from "@/components/portfolio/PortfolioTheme";
 import IntroSection from "@/components/portfolio/IntroSection";
 import ServicesSection from "@/components/portfolio/ServicesSection";
 import ApproachSection from "@/components/portfolio/ApproachSection";
@@ -73,10 +74,10 @@ export default async function PortfolioPage({
   const pillars = portfolio.servicePillars as unknown as ServicePillar[];
 
   return (
-    <div
-      className="min-h-screen font-dm"
-      style={{ background: "#0A0A0A", color: "#E5E5E5" }}
-    >
+    <div className="min-h-screen font-dm">
+      {/* Aplica la paleta de color del portafolio */}
+      <PortfolioTheme paletteId={portfolio.paletteId} />
+
       {/* Fuentes de Google */}
       <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@400;500;600;700&family=Syne:wght@400;700;800&display=swap"

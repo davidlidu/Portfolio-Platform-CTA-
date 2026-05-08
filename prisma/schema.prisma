@@ -63,6 +63,9 @@ model Portfolio {
   footerInitials String @default("JP")
   footerName     String
 
+  // Tema de color del portafolio público
+  paletteId String @default("emerald")
+
   // Proyectos
   projects Project[]
 }

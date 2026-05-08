@@ -78,6 +78,9 @@ export const portfolioSchema = z.object({
   // Footer
   footerInitials: z.string().default("JP"),
   footerName: z.string().min(1, "El nombre del footer es requerido"),
+
+  // Tema de color
+  paletteId: z.string().default("emerald"),
 });
 
 // Esquema para crear/actualizar proyecto

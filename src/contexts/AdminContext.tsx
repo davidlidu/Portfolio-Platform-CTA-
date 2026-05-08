@@ -7,12 +7,17 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import { PALETTES, ColorPalette, DEFAULT_PALETTE_ID } from "@/lib/palettes";
 import { Lang, getTranslator, TranslationKey } from "@/lib/translations";
 
+// Admin panel is always fixed to this orange brand color (#F2602A = 242 96 42)
+const ADMIN_ACCENT = "242 96 42";
+const ADMIN_BG = "10 10 10";
+const ADMIN_CARD = "17 17 17";
+const ADMIN_CARD_BORDER = "30 30 30";
+const ADMIN_TEXT = "229 229 229";
+const ADMIN_TEXT_DIM = "136 136 136";
+
 interface AdminContextValue {
-  palette: ColorPalette;
-  setPalette: (id: string) => void;
   lang: Lang;
   setLang: (lang: Lang) => void;
   t: (key: TranslationKey) => string;
@@ -23,39 +28,27 @@ interface AdminContextValue {
 const AdminContext = createContext<AdminContextValue | null>(null);
 
 export function AdminProvider({ children }: { children: ReactNode }) {
-  const [paletteId, setPaletteId] = useState(DEFAULT_PALETTE_ID);
   const [lang, setLangState] = useState<Lang>("es");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const palette = PALETTES.find((p) => p.id === paletteId) ?? PALETTES[0];
-
-  // Load persisted preferences on mount
+  // Load persisted language preference
   useEffect(() => {
-    const savedPalette = localStorage.getItem("admin-palette");
     const savedLang = localStorage.getItem("admin-lang") as Lang | null;
-    if (savedPalette && PALETTES.find((p) => p.id === savedPalette)) {
-      setPaletteId(savedPalette);
-    }
     if (savedLang === "es" || savedLang === "en") {
       setLangState(savedLang);
     }
   }, []);
 
-  // Apply palette to CSS variables whenever it changes
+  // Lock admin CSS variables to the fixed orange palette (never changes)
   useEffect(() => {
     const root = document.documentElement;
-    root.style.setProperty("--accent", palette.accent);
-    root.style.setProperty("--bg", palette.bg);
-    root.style.setProperty("--card", palette.card);
-    root.style.setProperty("--card-border", palette.cardBorder);
-    root.style.setProperty("--text", palette.text);
-    root.style.setProperty("--text-dim", palette.textDim);
-  }, [palette]);
-
-  const setPalette = (id: string) => {
-    setPaletteId(id);
-    localStorage.setItem("admin-palette", id);
-  };
+    root.style.setProperty("--accent", ADMIN_ACCENT);
+    root.style.setProperty("--bg", ADMIN_BG);
+    root.style.setProperty("--card", ADMIN_CARD);
+    root.style.setProperty("--card-border", ADMIN_CARD_BORDER);
+    root.style.setProperty("--text", ADMIN_TEXT);
+    root.style.setProperty("--text-dim", ADMIN_TEXT_DIM);
+  }, []);
 
   const setLang = (l: Lang) => {
     setLangState(l);
@@ -65,9 +58,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   const t = getTranslator(lang);
 
   return (
-    <AdminContext.Provider
-      value={{ palette, setPalette, lang, setLang, t, sidebarOpen, setSidebarOpen }}
-    >
+    <AdminContext.Provider value={{ lang, setLang, t, sidebarOpen, setSidebarOpen }}>
       {children}
     </AdminContext.Provider>
   );
