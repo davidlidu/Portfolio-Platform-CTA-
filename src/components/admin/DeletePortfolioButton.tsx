@@ -1,8 +1,8 @@
-// src/components/admin/DeletePortfolioButton.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAdmin } from "@/contexts/AdminContext";
 
 export default function DeletePortfolioButton({
   id,
@@ -12,6 +12,7 @@ export default function DeletePortfolioButton({
   name: string;
 }) {
   const router = useRouter();
+  const { t } = useAdmin();
   const [confirming, setConfirming] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -37,13 +38,13 @@ export default function DeletePortfolioButton({
           disabled={deleting}
           className="px-3 py-1.5 text-xs font-medium text-red-400 bg-red-400/10 hover:bg-red-400/20 rounded-lg transition-colors disabled:opacity-50"
         >
-          {deleting ? "..." : "Sí, eliminar"}
+          {deleting ? "..." : t("dash.action.delete_confirm")}
         </button>
         <button
           onClick={() => setConfirming(false)}
           className="px-3 py-1.5 text-xs font-medium text-text-dim hover:text-white rounded-lg transition-colors"
         >
-          Cancelar
+          {t("dash.action.cancel")}
         </button>
       </div>
     );
@@ -54,7 +55,7 @@ export default function DeletePortfolioButton({
       onClick={() => setConfirming(true)}
       className="px-3 py-1.5 text-xs font-medium text-red-400/60 hover:text-red-400 hover:bg-red-400/5 rounded-lg transition-colors"
     >
-      Eliminar
+      {t("dash.action.delete")}
     </button>
   );
 }

@@ -5,14 +5,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@400;500;600;700&family=Syne:wght@400;700;800&display=swap');
 
+/* Default palette — Emerald (overridden dynamically by AdminContext) */
 :root {
-  --accent: #10B981;
-  --accent-dim: rgba(16, 185, 129, 0.15);
-  --bg: #0A0A0A;
-  --card: #111111;
-  --card-border: #1E1E1E;
-  --text: #E5E5E5;
-  --text-dim: #888888;
+  --accent: 16 185 129;
+  --bg: 10 10 10;
+  --card: 17 17 17;
+  --card-border: 30 30 30;
+  --text: 229 229 229;
+  --text-dim: 136 136 136;
 }
 
 body {
@@ -20,7 +20,7 @@ body {
 }
 
 ::selection {
-  background: var(--accent);
+  background: rgb(var(--accent));
   color: #000;
 }
 
@@ -29,7 +29,7 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: rgb(var(--bg));
 }
 ::-webkit-scrollbar-thumb {
   background: #333;
@@ -44,4 +44,13 @@ body {
 
 .animate-pulse-dot {
   animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Sidebar slide-in animation for mobile */
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+.sidebar-enter {
+  animation: slide-in-left 0.2s ease-out;
 }

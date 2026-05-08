@@ -7,6 +7,8 @@ import type { Portfolio, Project } from "@prisma/client";
 import type { Social, ServicePillar } from "@/types";
 import ImageUploader from "./ImageUploader";
 import TagInput from "./TagInput";
+import { useAdmin } from "@/contexts/AdminContext";
+import type { TranslationKey } from "@/lib/translations";
 
 // Iconos de redes sociales disponibles
 const SOCIAL_OPTIONS = [
@@ -21,14 +23,14 @@ const SOCIAL_OPTIONS = [
 
 type Tab = "basic" | "whatsapp" | "socials" | "intro" | "services" | "approach" | "contact";
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: "basic", label: "Básico" },
-  { id: "whatsapp", label: "WhatsApp" },
-  { id: "socials", label: "Redes" },
-  { id: "intro", label: "Intro" },
-  { id: "services", label: "Servicios" },
-  { id: "approach", label: "Enfoque" },
-  { id: "contact", label: "Contacto" },
+const TABS: { id: Tab; labelKey: TranslationKey }[] = [
+  { id: "basic", labelKey: "form.tab.basic" },
+  { id: "whatsapp", labelKey: "form.tab.whatsapp" },
+  { id: "socials", labelKey: "form.tab.socials" },
+  { id: "intro", labelKey: "form.tab.intro" },
+  { id: "services", labelKey: "form.tab.services" },
+  { id: "approach", labelKey: "form.tab.approach" },
+  { id: "contact", labelKey: "form.tab.contact" },
 ];
 
 interface PortfolioFormProps {
@@ -38,6 +40,7 @@ interface PortfolioFormProps {
 
 export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFormProps) {
   const router = useRouter();
+  const { t } = useAdmin();
   const [tab, setTab] = useState<Tab>("basic");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -239,7 +242,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-syne font-extrabold text-2xl text-white">
-            {isNew ? "Crear portafolio" : "Editar portafolio"}
+            {isNew ? t("form.create_title") : t("form.edit_title")}
           </h1>
           {!isNew && form.slug && (
             <a
@@ -258,7 +261,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               onClick={handleDelete}
               className="px-4 py-2 text-sm text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
             >
-              Eliminar
+              {t("form.delete")}
             </button>
           )}
         </div>
@@ -266,22 +269,22 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
 
       {/* Tabs */}
       <div className="flex gap-1 mb-6 overflow-x-auto border-b border-card-border">
-        {TABS.map((t) => (
+        {TABS.map((tabItem) => (
           <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${tab === t.id
+            key={tabItem.id}
+            onClick={() => setTab(tabItem.id)}
+            className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${tab === tabItem.id
               ? "text-accent border-accent"
               : "text-text-dim border-transparent hover:text-white"
               }`}
           >
-            {t.label}
+            {t(tabItem.labelKey)}
           </button>
         ))}
       </div>
 
       {/* Form content */}
-      <div className="bg-card border border-card-border rounded-2xl p-8 mb-6">
+      <div className="bg-card border border-card-border rounded-2xl p-4 md:p-8 mb-6">
         {/* TAB: BÁSICO */}
         {tab === "basic" && (
           <div className="space-y-6 max-w-2xl">
@@ -757,7 +760,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
       </div>
 
       {/* Sticky footer con acciones */}
-      <div className="sticky bottom-0 bg-bg border-t border-card-border -mx-8 px-8 py-4 flex items-center justify-between">
+      <div className="sticky bottom-0 bg-bg border-t border-card-border -mx-4 md:-mx-8 px-4 md:px-8 py-4 flex items-center justify-between">
         <div>
           {error && <p className="text-red-400 text-sm">{error}</p>}
           {success && <p className="text-accent text-sm">{success}</p>}
@@ -767,14 +770,16 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
             onClick={() => router.push("/admin")}
             className="px-6 py-2.5 text-sm text-text-dim hover:text-white transition-colors"
           >
-            Cancelar
+            {t("dash.action.cancel")}
           </button>
           <button
             onClick={handleSave}
             disabled={saving}
             className="bg-accent hover:bg-accent/90 text-black font-bold px-8 py-2.5 rounded-lg transition-all text-sm disabled:opacity-50"
           >
-            {saving ? "Guardando..." : "Guardar cambios"}
+            {saving
+              ? (isNew ? t("form.creating") : t("form.saving"))
+              : (isNew ? t("form.create_btn") : t("form.save"))}
           </button>
         </div>
       </div>
@@ -784,19 +789,19 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
         <div className="mt-8 bg-card border border-card-border rounded-2xl p-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-white font-semibold text-lg">
-              Proyectos ({portfolio.projects.length})
+              {t("projects.title")} ({portfolio.projects.length})
             </h2>
             <a
               href={`/admin/portfolios/${portfolio.id}/projects/new`}
               className="bg-accent/10 text-accent hover:bg-accent/20 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
             >
-              + Agregar proyecto
+              {t("projects.new")}
             </a>
           </div>
 
           {portfolio.projects.length === 0 ? (
             <p className="text-text-dim text-sm text-center py-8">
-              No hay proyectos aún
+              {t("projects.empty")}
             </p>
           ) : (
             <div className="space-y-3">
@@ -830,7 +835,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                       href={`/admin/portfolios/${portfolio.id}/projects/${project.id}`}
                       className="px-3 py-1.5 text-xs text-text-dim hover:text-white bg-white/5 hover:bg-white/10 rounded-lg transition-colors"
                     >
-                      Editar
+                      {t("projects.edit")}
                     </a>
                   </div>
                 ))}

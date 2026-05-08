@@ -6,13 +6,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        accent: "#10B981",
-        "accent-dim": "rgba(16,185,129,0.15)",
-        bg: "#0A0A0A",
-        card: "#111111",
-        "card-border": "#1E1E1E",
-        "text-main": "#E5E5E5",
-        "text-dim": "#888888",
+        // Dynamic colors via CSS variables (RGB channel format for opacity support)
+        accent: "rgb(var(--accent) / <alpha-value>)",
+        "accent-dim": "rgb(var(--accent) / 0.15)",
+        bg: "rgb(var(--bg) / <alpha-value>)",
+        card: "rgb(var(--card) / <alpha-value>)",
+        "card-border": "rgb(var(--card-border) / <alpha-value>)",
+        "text-main": "rgb(var(--text) / <alpha-value>)",
+        "text-dim": "rgb(var(--text-dim) / <alpha-value>)",
       },
       fontFamily: {
         syne: ["Syne", "sans-serif"],
