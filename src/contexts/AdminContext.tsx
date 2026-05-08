@@ -9,8 +9,8 @@ import {
 } from "react";
 import { Lang, getTranslator, TranslationKey } from "@/lib/translations";
 
-// Admin panel is always fixed to this orange brand color (#F2602A = 242 96 42)
-const ADMIN_ACCENT = "242 96 42";
+// Admin panel is always fixed to this teal brand color (#24FEBF = 36 254 191)
+const ADMIN_ACCENT = "36 254 191";
 const ADMIN_BG = "10 10 10";
 const ADMIN_CARD = "17 17 17";
 const ADMIN_CARD_BORDER = "30 30 30";

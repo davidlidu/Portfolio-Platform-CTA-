@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useAdmin } from "@/contexts/AdminContext";
+import TapHubLogo from "@/components/admin/TapHubLogo";
 
 const NAV_ITEMS = [{ href: "/admin", labelKey: "nav.dashboard" as const, icon: "◫" }];
 
@@ -34,9 +35,7 @@ export default function Sidebar() {
       {/* Logo + close button (mobile only) */}
       <div className="p-6 border-b border-card-border flex items-center justify-between">
         <Link href="/admin" onClick={() => setSidebarOpen(false)}>
-          <h1 className="font-syne font-extrabold text-xl text-white">
-            <span className="text-accent">CTA</span>+ Admin
-          </h1>
+          <TapHubLogo className="h-8 w-auto" />
         </Link>
         <button
           onClick={() => setSidebarOpen(false)}

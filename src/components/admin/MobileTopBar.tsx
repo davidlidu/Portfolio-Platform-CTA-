@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useAdmin } from "@/contexts/AdminContext";
+import TapHubLogo from "@/components/admin/TapHubLogo";
 
 export default function MobileTopBar() {
   const { setSidebarOpen } = useAdmin();
@@ -29,9 +30,7 @@ export default function MobileTopBar() {
       </button>
 
       <Link href="/admin">
-        <h1 className="font-syne font-extrabold text-lg text-white">
-          <span className="text-accent">CTA</span>+ Admin
-        </h1>
+        <TapHubLogo className="h-7 w-auto" />
       </Link>
 
       <div className="w-9" />
