@@ -1,3 +1,4 @@
+"use client"
 // src/app/page.tsx
 // Landing page principal TapHub
 import type { Metadata } from "next";
@@ -289,7 +290,7 @@ export default function Home() {
         <div className="th-logos-section">
           <div className="th-logos-label">Diseñado para profesionales que hacen networking constante</div>
           <div className="th-logos-row">
-            {["Realtors","Brokers","Consultores","Abogados","Vendedores B2B","Fundadores"].map(l => (
+            {["Realtors", "Brokers", "Consultores", "Abogados", "Vendedores B2B", "Fundadores"].map(l => (
               <span key={l} className="th-logo-item">{l}</span>
             ))}
           </div>
@@ -303,11 +304,11 @@ export default function Home() {
                 <div className="th-section-label">El problema</div>
                 <h2 className="th-section-title">Las tarjetas de papel<br /><em>ya no convierten.</em></h2>
                 <p className="th-section-sub">Inviertes tiempo y dinero en eventos. Das tarjetas. La gente las guarda... o las pierde. Nadie te busca. El networking falla porque la herramienta que usas tiene 50 años.</p>
-                <div className="th-problem-cards" style={{marginTop:"36px"}}>
+                <div className="th-problem-cards" style={{ marginTop: "36px" }}>
                   {[
-                    {icon:"🗑️", title:"El 95% de las tarjetas acaba en la basura", desc:"En promedio, un profesional descarta las tarjetas recibidas en menos de una semana."},
-                    {icon:"🔍", title:"Nadie te busca — te olvidan", desc:"Sin un sistema de seguimiento, el contacto muere en el momento en que se da la mano."},
-                    {icon:"📊", title:"Cero métricas, cero datos", desc:"¿Cuántas tarjetas repartiste? ¿Cuántas se convirtieron en oportunidades? No lo sabes."},
+                    { icon: "🗑️", title: "El 95% de las tarjetas acaba en la basura", desc: "En promedio, un profesional descarta las tarjetas recibidas en menos de una semana." },
+                    { icon: "🔍", title: "Nadie te busca — te olvidan", desc: "Sin un sistema de seguimiento, el contacto muere en el momento en que se da la mano." },
+                    { icon: "📊", title: "Cero métricas, cero datos", desc: "¿Cuántas tarjetas repartiste? ¿Cuántas se convirtieron en oportunidades? No lo sabes." },
                   ].map(c => (
                     <div key={c.title} className="th-problem-card">
                       <div className="th-problem-icon">{c.icon}</div>
@@ -319,14 +320,14 @@ export default function Home() {
               <div className="th-reveal">
                 <div className="th-big-stat">
                   <div className="th-big-stat-num">$0</div>
-                  <div className="th-big-stat-text" style={{fontSize:"16px",color:"var(--mid)"}}>Eso genera la mayoría de tarjetas de presentación después de un evento.</div>
+                  <div className="th-big-stat-text" style={{ fontSize: "16px", color: "var(--mid)" }}>Eso genera la mayoría de tarjetas de presentación después de un evento.</div>
                 </div>
-                <div style={{marginTop:"16px",background:"var(--card)",border:"1px solid var(--green)",borderRadius:"var(--radius-xl)",padding:"32px"}}>
-                  <div style={{fontSize:"13px",fontWeight:600,color:"var(--green)",letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:"16px"}}>Con TapHub, en cambio</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
-                    {[["Leads generados","Rastreados"],["Tiempo de respuesta","Inmediato"],["Tarjetas perdidas","Imposible"],["Tu hub disponible","24/7"]].map(([k,v]) => (
-                      <div key={k} style={{display:"flex",justifyContent:"space-between",fontSize:"14px",color:"var(--mid)"}}>
-                        <span>{k}</span><span style={{color:"var(--green)",fontWeight:600}}>{v}</span>
+                <div style={{ marginTop: "16px", background: "var(--card)", border: "1px solid var(--green)", borderRadius: "var(--radius-xl)", padding: "32px" }}>
+                  <div style={{ fontSize: "13px", fontWeight: 600, color: "var(--green)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "16px" }}>Con TapHub, en cambio</div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                    {[["Leads generados", "Rastreados"], ["Tiempo de respuesta", "Inmediato"], ["Tarjetas perdidas", "Imposible"], ["Tu hub disponible", "24/7"]].map(([k, v]) => (
+                      <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", color: "var(--mid)" }}>
+                        <span>{k}</span><span style={{ color: "var(--green)", fontWeight: 600 }}>{v}</span>
                       </div>
                     ))}
                   </div>
@@ -339,16 +340,16 @@ export default function Home() {
         {/* CÓMO FUNCIONA */}
         <section id="como-funciona" className="th-section">
           <div className="th-container">
-            <div className="th-reveal" style={{textAlign:"center"}}>
-              <div className="th-section-label" style={{justifyContent:"center"}}>Cómo funciona</div>
+            <div className="th-reveal" style={{ textAlign: "center" }}>
+              <div className="th-section-label" style={{ justifyContent: "center" }}>Cómo funciona</div>
               <h2 className="th-section-title">Tres pasos.<br /><em>Sin complicaciones.</em></h2>
-              <p className="th-section-sub" style={{margin:"0 auto"}}>En menos de 5 días tienes tu hub activo, tu tarjeta en mano y un sistema que trabaja por ti en cada evento.</p>
+              <p className="th-section-sub" style={{ margin: "0 auto" }}>En menos de 5 días tienes tu hub activo, tu tarjeta en mano y un sistema que trabaja por ti en cada evento.</p>
             </div>
             <div className="th-steps-grid th-reveal">
               {[
-                {n:"01",t:"Diseñamos tu hub",d:"Creamos tu página personal con tu identidad, propuesta de valor, portafolio, testimonios y CTA de conversión. Optimizada para móvil, carga en menos de 2 segundos.",tag:"⏱ 3–5 días hábiles"},
-                {n:"02",t:"Programamos tu tarjeta",d:"Configuramos tu tarjeta NFC con tu dominio personalizado. Un toque desde cualquier iPhone (desde el 7) o Android y tu hub aparece al instante. Sin apps, sin claves.",tag:"📱 Compatible con cualquier móvil"},
-                {n:"03",t:"Tú cierras, nosotros medimos",d:"Sal a eventos con tu tarjeta. Cada toque queda registrado. Ves quién visitó tu hub, cuándo y qué hizo. Tu próximo cliente puede estar a un toque de distancia.",tag:"📊 Analytics en tiempo real"},
+                { n: "01", t: "Diseñamos tu hub", d: "Creamos tu página personal con tu identidad, propuesta de valor, portafolio, testimonios y CTA de conversión. Optimizada para móvil, carga en menos de 2 segundos.", tag: "⏱ 3–5 días hábiles" },
+                { n: "02", t: "Programamos tu tarjeta", d: "Configuramos tu tarjeta NFC con tu dominio personalizado. Un toque desde cualquier iPhone (desde el 7) o Android y tu hub aparece al instante. Sin apps, sin claves.", tag: "📱 Compatible con cualquier móvil" },
+                { n: "03", t: "Tú cierras, nosotros medimos", d: "Sal a eventos con tu tarjeta. Cada toque queda registrado. Ves quién visitó tu hub, cuándo y qué hizo. Tu próximo cliente puede estar a un toque de distancia.", tag: "📊 Analytics en tiempo real" },
               ].map(s => (
                 <div key={s.n} className="th-step-card">
                   <div className="th-step-num">{s.n}</div>
@@ -371,12 +372,12 @@ export default function Home() {
             </div>
             <div className="th-who-grid th-reveal">
               {[
-                {icon:"🏠",t:"Realtors y Brokers",d:"En ferias inmobiliarias o recorridos, cada toque es un lead calificado. Tu hub muestra propiedades, testimonios y un botón directo para agendar visita.",r:"→ Más leads en cada feria"},
-                {icon:"💼",t:"Consultores",d:"En conferencias y meetups, tu hub hace el pitch inicial por ti. Casos de éxito, metodología y un calendario para agendar la primera llamada.",r:"→ Reuniones agendadas en el evento"},
-                {icon:"⚖️",t:"Abogados",d:"Demuestra autoridad desde el primer contacto. Tu hub muestra especialidades, logros y permite solicitar consulta de inmediato con total privacidad.",r:"→ Consultas sin intermediarios"},
-                {icon:"📈",t:"Vendedores B2B",d:"Transforma cada handshake en pipeline. Tu hub integra con tu CRM y registra automáticamente cada contacto para seguimiento inmediato.",r:"→ Pipeline desde el evento"},
-                {icon:"🚀",t:"Fundadores",d:"Pitch tu startup en cada conversación sin hablar. Tu hub cuenta la historia, muestra tracción y dirige a quien sea a la siguiente acción.",r:"→ Inversores e interesados 24/7"},
-                {icon:"🌐",t:"Networkers profesionales",d:"Si tu negocio vive de relaciones, TapHub es tu infraestructura. Centraliza todo lo que eres en un solo punto de contacto memorable.",r:"→ Nunca más te olvidan"},
+                { icon: "🏠", t: "Realtors y Brokers", d: "En ferias inmobiliarias o recorridos, cada toque es un lead calificado. Tu hub muestra propiedades, testimonios y un botón directo para agendar visita.", r: "→ Más leads en cada feria" },
+                { icon: "💼", t: "Consultores", d: "En conferencias y meetups, tu hub hace el pitch inicial por ti. Casos de éxito, metodología y un calendario para agendar la primera llamada.", r: "→ Reuniones agendadas en el evento" },
+                { icon: "⚖️", t: "Abogados", d: "Demuestra autoridad desde el primer contacto. Tu hub muestra especialidades, logros y permite solicitar consulta de inmediato con total privacidad.", r: "→ Consultas sin intermediarios" },
+                { icon: "📈", t: "Vendedores B2B", d: "Transforma cada handshake en pipeline. Tu hub integra con tu CRM y registra automáticamente cada contacto para seguimiento inmediato.", r: "→ Pipeline desde el evento" },
+                { icon: "🚀", t: "Fundadores", d: "Pitch tu startup en cada conversación sin hablar. Tu hub cuenta la historia, muestra tracción y dirige a quien sea a la siguiente acción.", r: "→ Inversores e interesados 24/7" },
+                { icon: "🌐", t: "Networkers profesionales", d: "Si tu negocio vive de relaciones, TapHub es tu infraestructura. Centraliza todo lo que eres en un solo punto de contacto memorable.", r: "→ Nunca más te olvidan" },
               ].map(c => (
                 <div key={c.t} className="th-who-card">
                   <span className="th-who-icon">{c.icon}</span>
@@ -392,10 +393,10 @@ export default function Home() {
         {/* PRICING */}
         <section id="precios" className="th-section">
           <div className="th-container">
-            <div className="th-reveal" style={{textAlign:"center"}}>
-              <div className="th-section-label" style={{justifyContent:"center"}}>Precios</div>
+            <div className="th-reveal" style={{ textAlign: "center" }}>
+              <div className="th-section-label" style={{ justifyContent: "center" }}>Precios</div>
               <h2 className="th-section-title">Invierte menos de lo que<br /><em>cuesta un cliente perdido.</em></h2>
-              <p className="th-section-sub" style={{margin:"0 auto"}}>Setup único + mensualidad baja. Sin contratos. Sin sorpresas.</p>
+              <p className="th-section-sub" style={{ margin: "0 auto" }}>Setup único + mensualidad baja. Sin contratos. Sin sorpresas.</p>
             </div>
             <div className="th-pricing-grid th-reveal">
               <div className="th-pricing-card">
@@ -404,7 +405,7 @@ export default function Home() {
                 <div className="th-plan-period">setup único</div>
                 <div className="th-plan-monthly">mes</div>
                 <ul className="th-plan-features">
-                  {["Hub básico (5 secciones)","1 tarjeta NFC incluida","Dominio personalizado","CTA: WhatsApp o Cal.com","Hosting y soporte básico"].map(f=><li key={f}>{f}</li>)}
+                  {["Hub básico (5 secciones)", "1 tarjeta NFC incluida", "Dominio personalizado", "CTA: WhatsApp o Cal.com", "Hosting y soporte básico"].map(f => <li key={f}>{f}</li>)}
                 </ul>
                 <a href="#contacto" className="th-btn-plan th-btn-plan-outline">Empezar →</a>
               </div>
@@ -415,7 +416,7 @@ export default function Home() {
                 <div className="th-plan-period">setup único</div>
                 <div className="th-plan-monthly">mes · todo incluido</div>
                 <ul className="th-plan-features">
-                  {["Hub completo (8 secciones)","2 tarjetas NFC con diseño premium","Copywriting profesional incluido","Analytics dashboard","Integraciones (Calendly, WA, CRM)","Actualizaciones mensuales"].map(f=><li key={f}>{f}</li>)}
+                  {["Hub completo (8 secciones)", "2 tarjetas NFC con diseño premium", "Copywriting profesional incluido", "Analytics dashboard", "Integraciones (Calendly, WA, CRM)", "Actualizaciones mensuales"].map(f => <li key={f}>{f}</li>)}
                 </ul>
                 <a href="#contacto" className="th-btn-plan th-btn-plan-solid">Quiero el Pro →</a>
               </div>
@@ -425,14 +426,14 @@ export default function Home() {
                 <div className="th-plan-period">COP / año</div>
                 <div className="th-plan-monthly">Ahorro equivalente a 2 meses</div>
                 <ul className="th-plan-features">
-                  {["Todo el Plan Pro","Sin permanencia mensual","Prioridad en soporte"].map(f=><li key={f}>{f}</li>)}
+                  {["Todo el Plan Pro", "Sin permanencia mensual", "Prioridad en soporte"].map(f => <li key={f}>{f}</li>)}
                 </ul>
                 <a href="#contacto" className="th-btn-plan th-btn-plan-outline">Hablemos →</a>
               </div>
             </div>
-            <div className="th-reveal" style={{marginTop:"40px",padding:"32px",background:"var(--dark)",border:"1px solid var(--border)",borderRadius:"var(--radius-xl)",textAlign:"center"}}>
-              <p style={{fontSize:"14px",color:"var(--muted)"}}>
-                💡 Un profesional gasta en promedio <strong style={{color:"var(--cream)"}}>$300–500/año en tarjetas de papel</strong> que no generan datos ni seguimiento. TapHub Pro cuesta <strong style={{color:"var(--green)"}}>$69.000/mes</strong> y convierte cada contacto en pipeline real.
+            <div className="th-reveal" style={{ marginTop: "40px", padding: "32px", background: "var(--dark)", border: "1px solid var(--border)", borderRadius: "var(--radius-xl)", textAlign: "center" }}>
+              <p style={{ fontSize: "14px", color: "var(--muted)" }}>
+                💡 Un profesional gasta en promedio <strong style={{ color: "var(--cream)" }}>$300–500/año en tarjetas de papel</strong> que no generan datos ni seguimiento. TapHub Pro cuesta <strong style={{ color: "var(--green)" }}>$69.000/mes</strong> y convierte cada contacto en pipeline real.
               </p>
             </div>
           </div>
@@ -441,15 +442,15 @@ export default function Home() {
         {/* TESTIMONIALS */}
         <section className="th-section th-testimonials-section">
           <div className="th-container">
-            <div className="th-reveal" style={{textAlign:"center"}}>
-              <div className="th-section-label" style={{justifyContent:"center"}}>Resultados reales</div>
+            <div className="th-reveal" style={{ textAlign: "center" }}>
+              <div className="th-section-label" style={{ justifyContent: "center" }}>Resultados reales</div>
               <h2 className="th-section-title">Lo que dicen quienes<br /><em>ya tienen su hub.</em></h2>
             </div>
             <div className="th-testimonials-grid th-reveal">
               {[
-                {q:"En Startco repartí mi tarjeta NFC 40 veces. Al día siguiente tenía 12 personas en mi hub y 3 reuniones agendadas. Antes repartía 40 tarjetas de papel y no sabía ni si alguien las miraba.",init:"MR",name:"Martina Rodríguez",role:"Consultora de Marketing · Medellín",metric:"📊 40 toques · 12 visitas · 3 reuniones en 24h"},
-                {q:"Como realtor, cada feria inmobiliaria era un caos de papeles. Ahora doy un toque con mi tarjeta y el cliente ya tiene mi portafolio de propiedades, mis casos de éxito y un botón para agendar visita.",init:"CA",name:"Carlos Arango",role:"Realtor Senior · Bogotá",metric:"🏠 4 propiedades vendidas desde su hub en el primer mes"},
-                {q:"Lo que más me sorprendió fue ver exactamente quién visitó mi hub y cuándo. Pude hacer seguimiento personalizado a cada contacto. Eso con una tarjeta de papel es imposible.",init:"SV",name:"Sofía Vargas",role:"Abogada Corporativa · Medellín",metric:"⚖️ 8 consultas agendadas en su primer evento con TapHub"},
+                { q: "En Startco repartí mi tarjeta NFC 40 veces. Al día siguiente tenía 12 personas en mi hub y 3 reuniones agendadas. Antes repartía 40 tarjetas de papel y no sabía ni si alguien las miraba.", init: "MR", name: "Martina Rodríguez", role: "Consultora de Marketing · Medellín", metric: "📊 40 toques · 12 visitas · 3 reuniones en 24h" },
+                { q: "Como realtor, cada feria inmobiliaria era un caos de papeles. Ahora doy un toque con mi tarjeta y el cliente ya tiene mi portafolio de propiedades, mis casos de éxito y un botón para agendar visita.", init: "CA", name: "Carlos Arango", role: "Realtor Senior · Bogotá", metric: "🏠 4 propiedades vendidas desde su hub en el primer mes" },
+                { q: "Lo que más me sorprendió fue ver exactamente quién visitó mi hub y cuándo. Pude hacer seguimiento personalizado a cada contacto. Eso con una tarjeta de papel es imposible.", init: "SV", name: "Sofía Vargas", role: "Abogada Corporativa · Medellín", metric: "⚖️ 8 consultas agendadas en su primer evento con TapHub" },
               ].map(t => (
                 <div key={t.name} className="th-testi-card">
                   <div className="th-testi-quote">"</div>
@@ -468,18 +469,18 @@ export default function Home() {
         {/* FAQ */}
         <section className="th-section">
           <div className="th-container">
-            <div className="th-reveal" style={{textAlign:"center"}}>
-              <div className="th-section-label" style={{justifyContent:"center"}}>Preguntas frecuentes</div>
+            <div className="th-reveal" style={{ textAlign: "center" }}>
+              <div className="th-section-label" style={{ justifyContent: "center" }}>Preguntas frecuentes</div>
               <h2 className="th-section-title">Todo lo que necesitas<br /><em>saber antes.</em></h2>
             </div>
             <div className="th-faq-grid th-reveal" id="th-faq">
               {[
-                {q:"¿Necesito instalar una app?",a:"No. Absolutamente ninguna app. Cuando alguien toca tu tarjeta, el hub se abre directamente en el navegador de su teléfono. Fricción cero."},
-                {q:"¿Funciona en iPhone?",a:"Sí, desde el iPhone 7 en adelante (iOS 13+). Compatible con todos los Android con NFC activo. Cubre más del 95% de los smartphones del mercado."},
-                {q:"¿Qué pasa si pierdo la tarjeta?",a:"Tu hub sigue funcionando — es independiente de la tarjeta física. Te enviamos una tarjeta de reemplazo y en 10 minutos está programada. Tu enlace y tu hub no cambian."},
-                {q:"¿Puedo cambiar el contenido de mi hub?",a:"Sí, cuantas veces quieras. Los planes Pro y Elite incluyen actualizaciones mensuales sin costo adicional. Los cambios urgentes se aplican en menos de 48 horas."},
-                {q:"¿Cuánto tiempo tarda en estar listo?",a:"Entre 3 y 5 días hábiles desde que recibes el formulario de onboarding. Si tienes un evento próximo, contáctanos y buscamos la forma de acelerarlo."},
-                {q:"¿Puedo cancelar el plan mensual?",a:"Sí, en cualquier momento sin penalizaciones. Tu hub seguirá activo hasta el final del período pagado. No hay contratos de largo plazo ni cláusulas ocultas."},
+                { q: "¿Necesito instalar una app?", a: "No. Absolutamente ninguna app. Cuando alguien toca tu tarjeta, el hub se abre directamente en el navegador de su teléfono. Fricción cero." },
+                { q: "¿Funciona en iPhone?", a: "Sí, desde el iPhone 7 en adelante (iOS 13+). Compatible con todos los Android con NFC activo. Cubre más del 95% de los smartphones del mercado." },
+                { q: "¿Qué pasa si pierdo la tarjeta?", a: "Tu hub sigue funcionando — es independiente de la tarjeta física. Te enviamos una tarjeta de reemplazo y en 10 minutos está programada. Tu enlace y tu hub no cambian." },
+                { q: "¿Puedo cambiar el contenido de mi hub?", a: "Sí, cuantas veces quieras. Los planes Pro y Elite incluyen actualizaciones mensuales sin costo adicional. Los cambios urgentes se aplican en menos de 48 horas." },
+                { q: "¿Cuánto tiempo tarda en estar listo?", a: "Entre 3 y 5 días hábiles desde que recibes el formulario de onboarding. Si tienes un evento próximo, contáctanos y buscamos la forma de acelerarlo." },
+                { q: "¿Puedo cancelar el plan mensual?", a: "Sí, en cualquier momento sin penalizaciones. Tu hub seguirá activo hasta el final del período pagado. No hay contratos de largo plazo ni cláusulas ocultas." },
               ].map(f => (
                 <div key={f.q} className="th-faq-item" onClick={(e) => {
                   const item = e.currentTarget;
@@ -502,13 +503,13 @@ export default function Home() {
         <section id="contacto" className="th-cta-section">
           <div className="th-container">
             <div className="th-cta-box th-reveal">
-              <div className="th-section-label" style={{justifyContent:"center",marginBottom:"24px"}}>Empieza hoy</div>
+              <div className="th-section-label" style={{ justifyContent: "center", marginBottom: "24px" }}>Empieza hoy</div>
               <h2 className="th-cta-title">¿Listo para que tu próximo<br />evento <em>genere pipeline</em>?</h2>
               <p className="th-cta-sub">Déjanos tu nombre y WhatsApp. En menos de 24 horas te mostramos cómo quedaría tu hub personalizado — sin compromiso.</p>
               <div className="th-cta-form">
                 <input type="text" className="th-cta-input" placeholder="Tu nombre" />
                 <input type="tel" className="th-cta-input" placeholder="WhatsApp" />
-                <a href="#" className="th-btn-primary" style={{whiteSpace:"nowrap"}}>Ver mi hub →</a>
+                <a href="#" className="th-btn-primary" style={{ whiteSpace: "nowrap" }}>Ver mi hub →</a>
               </div>
               <p className="th-cta-note">Sin spam. Sin compromiso. Solo te mostramos cómo quedaría.</p>
             </div>
@@ -528,7 +529,8 @@ export default function Home() {
         </footer>
       </div>
 
-      <script dangerouslySetInnerHTML={{__html: `
+      <script dangerouslySetInnerHTML={{
+        __html: `
         // Scroll reveal
         (function(){
           var reveals = document.querySelectorAll('.th-reveal');
