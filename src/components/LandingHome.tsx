@@ -1,6 +1,29 @@
 "use client"
 
+import { useEffect } from "react";
+
 export default function LandingHome() {
+    useEffect(() => {
+        const reveals = document.querySelectorAll('.th-reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        const nav = document.getElementById('th-nav');
+        const onScroll = () => {
+            if (nav) nav.style.borderBottomColor = window.scrollY > 60 ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.04)';
+        };
+        window.addEventListener('scroll', onScroll);
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('scroll', onScroll);
+        };
+    }, []);
     return (
         <>
             <style>{`
@@ -520,27 +543,6 @@ export default function LandingHome() {
                 </footer>
             </div>
 
-            <script dangerouslySetInnerHTML={{
-                __html: `
-        // Scroll reveal
-        (function(){
-          var reveals = document.querySelectorAll('.th-reveal');
-          var observer = new IntersectionObserver(function(entries){
-            entries.forEach(function(entry, i){
-              if(entry.isIntersecting){
-                setTimeout(function(){ entry.target.classList.add('visible'); }, i*80);
-              }
-            });
-          }, {threshold:0.1, rootMargin:'0px 0px -40px 0px'});
-          reveals.forEach(function(el){ observer.observe(el); });
-
-          // Nav scroll
-          var nav = document.getElementById('th-nav');
-          window.addEventListener('scroll', function(){
-            if(nav) nav.style.borderBottomColor = window.scrollY > 60 ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.04)';
-          });
-        })();
-      `}} />
         </>
     );
 }
