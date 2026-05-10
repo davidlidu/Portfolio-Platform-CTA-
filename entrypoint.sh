@@ -24,14 +24,12 @@ done
 
 echo "✅ DB lista."
 
-# Si hay migraciones, las aplica; si no, sincroniza el schema directamente
-if [ -d "./prisma/migrations" ] && [ "$(ls -A ./prisma/migrations 2>/dev/null)" ]; then
-  echo "📦 Aplicando migraciones..."
-  node node_modules/prisma/build/index.js migrate deploy
-else
-  echo "📦 Sin migraciones — sincronizando schema con db push..."
-  node node_modules/prisma/build/index.js db push --accept-data-loss
-fi
+# Resolver migraciones fallidas antes de aplicar (error P3009)
+echo "🔧 Resolviendo migraciones fallidas si existen..."
+node node_modules/prisma/build/index.js migrate resolve --rolled-back 0001_init 2>/dev/null || true
+
+echo "📦 Aplicando migraciones..."
+node node_modules/prisma/build/index.js migrate deploy
 
 echo "🚀 Iniciando Next.js en puerto ${PORT:-3000}..."
 exec node server.js
