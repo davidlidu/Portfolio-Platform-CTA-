@@ -15,32 +15,35 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 
-# ─── Stage 3: Runner ─────────────────────────────────────────────────────────
+# ─── Stage 3: Runner (Node + Nginx) ──────────────────────────────────────────
 FROM node:20-alpine AS runner
-RUN apk add --no-cache openssl libc6-compat
+RUN apk add --no-cache openssl libc6-compat nginx
+
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
+# Next.js escucha en 3001 (interno), nginx expone 3000 (externo)
+ENV PORT=3001
+ENV HOSTNAME="127.0.0.1"
 
 # App standalone
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
-# Schema de prisma (necesario para migrate deploy)
+# Prisma
 COPY --from=builder /app/prisma ./prisma
-
-# Prisma Client generado
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-
-# Prisma CLI (necesario para ejecutar migrate deploy sin npx)
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 
 RUN mkdir -p /app/public/uploads
 
+# ─── Configuración de nginx ───────────────────────────────────────────────────
+RUN mkdir -p /run/nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# ─── Entrypoint ───────────────────────────────────────────────────────────────
 COPY entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 

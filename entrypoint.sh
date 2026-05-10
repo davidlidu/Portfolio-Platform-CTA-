@@ -23,5 +23,8 @@ done
 echo "✅ Base de datos lista. Ejecutando migraciones..."
 node node_modules/prisma/build/index.js migrate deploy
 
-echo "🚀 Iniciando servidor Next.js..."
+echo "🌐 Iniciando nginx..."
+nginx
+
+echo "🚀 Iniciando servidor Next.js en puerto 3001..."
 exec node server.js
