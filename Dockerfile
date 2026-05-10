@@ -1,49 +1,49 @@
-# Dockerfile
-FROM node:20-alpine AS base
-
-# --- Dependencias del Sistema ---
-# Al ponerlo en la base, todos los stages (deps, builder, runner) tendrán OpenSSL
+# ─── Stage 1: Dependencias ───────────────────────────────────────────────────
+FROM node:20-alpine AS deps
 RUN apk add --no-cache openssl libc6-compat
-
-# --- Dependencies ---
-FROM base AS deps
 WORKDIR /app
 COPY package.json package-lock.json* ./
 COPY prisma ./prisma
 RUN npm ci
 
-# --- Builder ---
-FROM base AS builder
+# ─── Stage 2: Build ──────────────────────────────────────────────────────────
+FROM node:20-alpine AS builder
+RUN apk add --no-cache openssl libc6-compat
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Generar Prisma Client
-RUN npx prisma@5.15.0 generate
-
-# Build de Next.js
+RUN npx prisma generate
 RUN npm run build
 
-# --- Runner ---
-FROM base AS runner
+# ─── Stage 3: Runner ─────────────────────────────────────────────────────────
+FROM node:20-alpine AS runner
+RUN apk add --no-cache openssl libc6-compat
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Copiar archivos necesarios
+# App standalone
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+
+# Schema de prisma (necesario para migrate deploy)
 COPY --from=builder /app/prisma ./prisma
+
+# Prisma Client generado
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
-# Crear directorio para uploads
+# Prisma CLI (necesario para ejecutar migrate deploy sin npx)
+COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
+
 RUN mkdir -p /app/public/uploads
+
+COPY entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
 EXPOSE 3000
 
-# Ejecutar migraciones y luego iniciar la app en modo standalone
-CMD npx prisma@5.15.0 migrate deploy && node server.js
+CMD ["./entrypoint.sh"]
