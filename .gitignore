@@ -42,6 +42,6 @@ public/uploads/*
 !public/uploads/.gitkeep
 
 # prisma
-prisma/migrations/
+# prisma/migrations/  <- descomentado para incluir migraciones en git
 
 /.sfdx/
