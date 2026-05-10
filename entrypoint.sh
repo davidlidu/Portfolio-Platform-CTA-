@@ -24,9 +24,27 @@ done
 
 echo "✅ DB lista."
 
-# Resolver migraciones fallidas antes de aplicar (error P3009)
+# Verificar si las tablas ya existen (migración aplicada parcial o totalmente)
+TABLES_EXIST=$(node -e "
+const { PrismaClient } = require('@prisma/client');
+const p = new PrismaClient();
+p.\$queryRaw\`SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Portfolio'\`
+  .then(r => { p.\$disconnect(); process.stdout.write(r[0].count.toString()); process.exit(0); })
+  .catch(() => { p.\$disconnect(); process.stdout.write('0'); process.exit(0); });
+" 2>/dev/null || echo "0")
+
+echo "🔍 Tablas encontradas: $TABLES_EXIST"
+
+# Resolver migración fallida según el estado real de la DB
 echo "🔧 Resolviendo migraciones fallidas si existen..."
-node node_modules/prisma/build/index.js migrate resolve --rolled-back 0001_init 2>/dev/null || true
+
+if [ "$TABLES_EXIST" = "1" ]; then
+  echo "   → Tablas ya existen, marcando migración como aplicada..."
+  node node_modules/prisma/build/index.js migrate resolve --applied 0001_init 2>/dev/null && echo "   ✓ Marcada como aplicada" || echo "   (ya estaba resuelta)"
+else
+  echo "   → Tablas no existen, marcando migración como rolled-back..."
+  node node_modules/prisma/build/index.js migrate resolve --rolled-back 0001_init 2>/dev/null && echo "   ✓ Marcada como rolled-back" || echo "   (ya estaba resuelta)"
+fi
 
 echo "📦 Aplicando migraciones..."
 node node_modules/prisma/build/index.js migrate deploy
