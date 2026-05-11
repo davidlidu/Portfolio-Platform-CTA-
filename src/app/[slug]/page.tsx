@@ -74,7 +74,7 @@ export default async function PortfolioPage({
   const pillars = portfolio.servicePillars as unknown as ServicePillar[];
 
   return (
-    <div className="min-h-screen font-dm">
+    <div className="min-h-screen font-dm bg-bg">
       {/* Aplica la paleta de color del portafolio */}
       <PortfolioTheme paletteId={portfolio.paletteId} />
 
