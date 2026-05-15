@@ -40,6 +40,7 @@ next-env.d.ts
 # uploads (se manejan con volumen Docker)
 public/uploads/*
 !public/uploads/.gitkeep
+!public/uploads/TAPHUB.mp4
 
 # prisma
 # prisma/migrations/  <- descomentado para incluir migraciones en git
