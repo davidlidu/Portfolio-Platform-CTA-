@@ -535,6 +535,18 @@ export default function LandingHome() {
                     </div>
                 </div>
 
+                {/* VIDEO */}
+                <section style={{ width: "100%", lineHeight: 0, background: "#000" }}>
+                    <video
+                        src="/uploads/TAPHUB.mp4"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        style={{ width: "100%", display: "block", maxHeight: "90vh", objectFit: "cover" }}
+                    />
+                </section>
+
                 {/* PROBLEMA */}
                 <section className="th-section th-problem-section">
                     <div className="th-container">
