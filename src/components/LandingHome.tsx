@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const COPY = {
   es: {
@@ -207,7 +207,16 @@ const COPY = {
 
 export default function LandingHome() {
     const [lang, setLang] = useState<"es" | "en">("es");
+    const [muted, setMuted] = useState(true);
+    const videoRef = useRef<HTMLVideoElement>(null);
     const t = COPY[lang];
+
+    const toggleMute = () => {
+        if (videoRef.current) {
+            videoRef.current.muted = !muted;
+            setMuted(prev => !prev);
+        }
+    };
 
     useEffect(() => {
         const reveals = document.querySelectorAll('.th-reveal');
@@ -448,81 +457,52 @@ export default function LandingHome() {
                     </button>
                 </nav>
 
-                {/* HERO */}
-                <section className="th-hero">
-                    <div className="th-hero-bg"></div>
-                    <div className="th-hero-grid"></div>
-                    <div className="th-hero-inner">
-                        <div className="th-hero-content">
-                            <div className="th-hero-eyebrow">{t.eyebrow}</div>
-                            <h1 className="th-hero-title">{t.heroTitle}<br /><em>{t.heroTitleEm}</em></h1>
-                            <p className="th-hero-sub">
-                                {t.heroSub}<br />
-                                <strong>{t.heroSubStrong}</strong>{t.heroSubEnd}
-                            </p>
-                            <div className="th-hero-actions">
-                                <a href="#contacto" className="th-btn-primary">
-                                    {t.heroCta1}
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                        <path d="M3 8h10M9 4l4 4-4 4" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </a>
-                                <a href="#como-funciona" className="th-btn-ghost">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                        <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.2" />
-                                        <path d="M6.5 6C6.5 5.17 7.17 4.5 8 4.5s1.5.67 1.5 1.5S8.83 7.5 8 7.5V9.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                                        <circle cx="8" cy="11.5" r="0.6" fill="currentColor" />
-                                    </svg>
-                                    {t.heroCta2}
-                                </a>
-                            </div>
-                            <div className="th-hero-stats">
-                                <div><div className="th-stat-num">{t.stat1Num}</div><div className="th-stat-label">{t.stat1Label}</div></div>
-                                <div><div className="th-stat-num">{t.stat2Num}</div><div className="th-stat-label">{t.stat2Label}</div></div>
-                                <div><div className="th-stat-num">{t.stat3Num}</div><div className="th-stat-label">{t.stat3Label}</div></div>
-                            </div>
-                        </div>
-
-                        {/* NFC Visual */}
-                        <div className="th-hero-visual">
-                            <div className="th-nfc-scene">
-                                <div className="th-nfc-card">
-                                    <div className="th-card-logo">Tap<span>Hub</span></div>
-                                    <svg className="th-card-nfc-icon" viewBox="0 0 32 32" fill="none">
-                                        <path d="M16 4C16 4 8 8 8 16s8 12 8 12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
-                                        <path d="M16 4C16 4 24 8 24 16s-8 12-8 12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
-                                        <path d="M11 10.5C11 10.5 7 12.8 7 16s4 5.5 4 5.5" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
-                                        <path d="M21 10.5C21 10.5 25 12.8 25 16s-4 5.5-4 5.5" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
-                                        <circle cx="16" cy="16" r="2" fill="#888" />
-                                    </svg>
-                                    <div className="th-card-name">
-                                        <div className="th-card-person">Juan Pablo Rojas</div>
-                                        <div className="th-card-role">Growth &amp; Marketing · Colombia</div>
-                                    </div>
-                                    <div className="th-card-dots">
-                                        <div className="th-dot"></div><div className="th-dot"></div><div className="th-dot"></div>
-                                    </div>
-                                </div>
-                                <div className="th-tap-animation">
-                                    <div className="th-tap-rings">
-                                        <div className="th-ring"></div><div className="th-ring"></div><div className="th-ring"></div>
-                                    </div>
-                                    <span className="th-tap-label">Tap</span>
-                                </div>
-                                <div className="th-hub-preview">
-                                    <div className="th-hub-top">
-                                        <div className="th-hub-avatar">JP</div>
-                                        <div className="th-hub-info">
-                                            <div className="th-hub-name">Juan Pablo</div>
-                                            <div className="th-hub-title">Growth Consultant</div>
-                                        </div>
-                                    </div>
-                                    <div className="th-hub-btn">📅 Agenda reunión</div>
-                                    <div className="th-hub-link">Ver portafolio →</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                {/* HERO — VIDEO */}
+                <section style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden", background: "#000" }}>
+                    <video
+                        ref={videoRef}
+                        src="/uploads/TAPHUB.mp4"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                    {/* Gradient overlay so nav is readable */}
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 40%, transparent 70%, rgba(0,0,0,0.5) 100%)", pointerEvents: "none" }} />
+                    {/* Sound toggle */}
+                    <button
+                        onClick={toggleMute}
+                        aria-label={muted ? "Activar sonido" : "Silenciar"}
+                        style={{
+                            position: "absolute", bottom: "32px", right: "32px",
+                            width: "48px", height: "48px", borderRadius: "50%",
+                            background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)",
+                            border: "1px solid rgba(255,255,255,0.2)",
+                            color: "#fff", cursor: "pointer",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            transition: "background 0.2s, border-color 0.2s",
+                            zIndex: 10,
+                        }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(29,184,116,0.5)"; (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--green)"; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.55)"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.2)"; }}
+                    >
+                        {muted ? (
+                            /* muted icon */
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                                <line x1="23" y1="9" x2="17" y2="15" />
+                                <line x1="17" y1="9" x2="23" y2="15" />
+                            </svg>
+                        ) : (
+                            /* sound on icon */
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                            </svg>
+                        )}
+                    </button>
                 </section>
 
                 {/* LOGOS */}
@@ -534,18 +514,6 @@ export default function LandingHome() {
                         ))}
                     </div>
                 </div>
-
-                {/* VIDEO */}
-                <section style={{ width: "100%", lineHeight: 0, background: "#000" }}>
-                    <video
-                        src="/uploads/TAPHUB.mp4"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        style={{ width: "100%", display: "block", maxHeight: "90vh", objectFit: "cover" }}
-                    />
-                </section>
 
                 {/* PROBLEMA */}
                 <section className="th-section th-problem-section">
