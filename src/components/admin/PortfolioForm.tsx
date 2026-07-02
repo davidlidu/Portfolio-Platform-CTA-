@@ -236,7 +236,9 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
   const labelClass =
     "block text-text-dim text-xs font-semibold uppercase tracking-wider mb-2";
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000");
 
   return (
     <div>
