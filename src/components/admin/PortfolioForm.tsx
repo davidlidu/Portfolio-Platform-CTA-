@@ -334,7 +334,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
                 rows={2}
                 value={form.heroRole}
                 onChange={(e) => updateForm("heroRole", e.target.value)}
-                className={inputClass}
+                className={`${inputClass} text-center`}
                 placeholder="AI & Business&#10;Development Partner"
               />
             </div>
