@@ -176,15 +176,15 @@ export default function HeroSection({
         ))}
       </div>
 
-      {/* Role — bottom right */}
+      {/* Role — bottom center */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.1, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute right-6 md:right-10 bottom-16 md:bottom-24 z-[12] text-right"
+        className="absolute inset-x-0 bottom-16 md:bottom-24 z-[12] flex justify-center px-6"
       >
         <p
-          className="font-syne font-extrabold text-white"
+          className="font-syne font-extrabold text-white text-center"
           style={{
             fontSize: "clamp(1.1rem, 2.5vw, 2.2rem)",
             lineHeight: 1.15,
