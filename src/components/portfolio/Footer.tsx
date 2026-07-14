@@ -3,14 +3,17 @@
 
 import { motion } from "framer-motion";
 import type { Social } from "@/types";
+import { getPortfolioTranslator, type PortfolioLang } from "@/lib/portfolio-translations";
 
 interface FooterProps {
   initials: string;
   name: string;
   socials: Social[];
+  language: PortfolioLang;
 }
 
-export default function Footer({ initials, name, socials }: FooterProps) {
+export default function Footer({ initials, name, socials, language }: FooterProps) {
+  const pt = getPortfolioTranslator(language);
   return (
     <motion.footer
       initial={{ opacity: 0 }}
@@ -25,7 +28,7 @@ export default function Footer({ initials, name, socials }: FooterProps) {
       </span>
 
       <span className="text-text-dim text-xs">
-        © {new Date().getFullYear()} {name}. Todos los derechos reservados.
+        © {new Date().getFullYear()} {name}. {pt("footer.rights")}
       </span>
 
       <div className="flex gap-5">

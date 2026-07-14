@@ -4,6 +4,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import type { Social } from "@/types";
+import { getPortfolioTranslator, type PortfolioLang } from "@/lib/portfolio-translations";
 
 const SOCIAL_ICON_MAP: Record<string, string> = {
   linkedin: "in",
@@ -21,6 +22,7 @@ interface HeroSectionProps {
   role: string;
   photoUrl: string | null;
   socials: Social[];
+  language: PortfolioLang;
 }
 
 export default function HeroSection({
@@ -29,8 +31,10 @@ export default function HeroSection({
   role,
   photoUrl,
   socials,
+  language,
 }: HeroSectionProps) {
   const ref = useRef<HTMLElement>(null);
+  const pt = getPortfolioTranslator(language);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -226,7 +230,7 @@ export default function HeroSection({
         className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[12] flex flex-col items-center gap-1.5"
       >
         <span className="text-[10px] text-text-dim uppercase tracking-[0.12em]">
-          Scroll
+          {pt("hero.scroll")}
         </span>
         <motion.div
           animate={{ y: [0, 8, 0] }}

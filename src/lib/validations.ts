@@ -81,6 +81,9 @@ export const portfolioSchema = z.object({
 
   // Tema de color
   paletteId: z.string().default("emerald"),
+
+  // Idioma del portafolio público
+  language: z.enum(["es", "en"]).default("es"),
 });
 
 // Esquema para crear/actualizar proyecto

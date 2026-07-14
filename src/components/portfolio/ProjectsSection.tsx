@@ -4,18 +4,23 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Project } from "@prisma/client";
+import { getPortfolioTranslator, type PortfolioLang } from "@/lib/portfolio-translations";
 
 interface ProjectsSectionProps {
   projects: Project[];
+  language: PortfolioLang;
 }
 
 function ProjectModal({
   project,
   onClose,
+  language,
 }: {
   project: Project;
   onClose: () => void;
+  language: PortfolioLang;
 }) {
+  const pt = getPortfolioTranslator(language);
   const [currentImage, setCurrentImage] = useState(0);
   const allImages = [
     ...(project.thumbnailUrl ? [project.thumbnailUrl] : []),
@@ -110,7 +115,7 @@ function ProjectModal({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-accent font-semibold text-sm hover:underline group/link"
             >
-              Ver proyecto completo
+              {pt("projects.view_full")}
               <span className="group-hover/link:translate-x-1 transition-transform">
                 →
               </span>
@@ -130,8 +135,9 @@ function ProjectModal({
   );
 }
 
-export default function ProjectsSection({ projects }: ProjectsSectionProps) {
+export default function ProjectsSection({ projects, language }: ProjectsSectionProps) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const pt = getPortfolioTranslator(language);
 
   if (projects.length === 0) return null;
 
@@ -145,7 +151,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
         className="mb-12"
       >
         <span className="text-accent text-xs font-semibold uppercase tracking-[0.1em] block mb-4">
-          // Proyectos
+          {pt("projects.label")}
         </span>
         <h2
           className="font-syne font-extrabold text-white leading-tight"
@@ -154,7 +160,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
             letterSpacing: "-0.02em",
           }}
         >
-          Trabajo <span className="text-accent">destacado</span>
+          {pt("projects.title")} <span className="text-accent">{pt("projects.title_accent")}</span>
         </h2>
       </motion.div>
 
@@ -185,7 +191,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
                 <span className="text-white text-sm font-medium">
-                  Ver proyecto →
+                  {pt("projects.view")}
                 </span>
               </div>
             </div>
@@ -219,6 +225,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           <ProjectModal
             project={selectedProject}
             onClose={() => setSelectedProject(null)}
+            language={language}
           />
         )}
       </AnimatePresence>

@@ -78,6 +78,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
     footerInitials: portfolio?.footerInitials || "",
     footerName: portfolio?.footerName || "",
     paletteId: portfolio?.paletteId || "emerald",
+    language: (portfolio?.language as "es" | "en") || "es",
   });
 
   // Auto-generar slug desde el nombre
@@ -374,6 +375,29 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               <span className="text-sm text-text-main">
                 {form.isPublished ? t("basic.published") : t("basic.draft")}
               </span>
+            </div>
+
+            {/* Idioma del portafolio */}
+            <div className="border-t border-card-border pt-6">
+              <label className={labelClass}>{t("basic.language")}</label>
+              <p className="text-text-dim text-xs mb-4">{t("basic.language_hint")}</p>
+              <div className="flex gap-3">
+                {(["es", "en"] as const).map((lang) => (
+                  <button
+                    key={lang}
+                    type="button"
+                    onClick={() => updateForm("language", lang)}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
+                      form.language === lang
+                        ? "border-accent bg-accent/10 text-accent"
+                        : "border-[#2A2A2A] text-text-dim hover:border-white/30 hover:text-white"
+                    }`}
+                  >
+                    <span className="text-base">{lang === "es" ? "🇪🇸" : "🇺🇸"}</span>
+                    {t(lang === "es" ? "basic.language_es" : "basic.language_en")}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Paleta de color del portafolio */}

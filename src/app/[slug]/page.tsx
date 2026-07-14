@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import type { Social, ServicePillar } from "@/types";
 
 import Navbar from "@/components/portfolio/Navbar";
+import type { PortfolioLang } from "@/lib/portfolio-translations";
 import HeroSection from "@/components/portfolio/HeroSection";
 import PortfolioTheme from "@/components/portfolio/PortfolioTheme";
 import IntroSection from "@/components/portfolio/IntroSection";
@@ -72,6 +73,7 @@ export default async function PortfolioPage({
 
   const socials = portfolio.socials as unknown as Social[];
   const pillars = portfolio.servicePillars as unknown as ServicePillar[];
+  const language = (portfolio.language || "es") as PortfolioLang;
 
   return (
     <div className="min-h-screen font-dm bg-bg">
@@ -88,6 +90,7 @@ export default async function PortfolioPage({
         name={portfolio.heroName}
         hasProjects={portfolio.projects.length > 0}
         whatsappUrl={whatsappUrl}
+        language={language}
       />
 
       <HeroSection
@@ -96,6 +99,7 @@ export default async function PortfolioPage({
         role={portfolio.heroRole}
         photoUrl={portfolio.heroPhotoUrl}
         socials={socials}
+        language={language}
       />
 
       <IntroSection
@@ -121,7 +125,7 @@ export default async function PortfolioPage({
       />
 
       {portfolio.projects.length > 0 && (
-        <ProjectsSection projects={portfolio.projects} />
+        <ProjectsSection projects={portfolio.projects} language={language} />
       )}
 
       <ContactSection
@@ -140,6 +144,7 @@ export default async function PortfolioPage({
         initials={portfolio.footerInitials}
         name={portfolio.footerName}
         socials={socials}
+        language={language}
       />
     </div>
   );

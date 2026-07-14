@@ -3,15 +3,18 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { getPortfolioTranslator, type PortfolioLang } from "@/lib/portfolio-translations";
 
 interface NavbarProps {
   name: string;
   hasProjects: boolean;
   whatsappUrl: string;
+  language: PortfolioLang;
 }
 
-export default function Navbar({ name, hasProjects, whatsappUrl }: NavbarProps) {
+export default function Navbar({ name, hasProjects, whatsappUrl, language }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
+  const pt = getPortfolioTranslator(language);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 60);
@@ -20,9 +23,9 @@ export default function Navbar({ name, hasProjects, whatsappUrl }: NavbarProps) 
   }, []);
 
   const navItems = [
-    { href: "#servicios", label: "Servicios" },
-    ...(hasProjects ? [{ href: "#portafolio", label: "Portafolio" }] : []),
-    { href: "#contacto", label: "Contacto" },
+    { href: "#servicios", label: pt("nav.services") },
+    ...(hasProjects ? [{ href: "#portafolio", label: pt("nav.portfolio") }] : []),
+    { href: "#contacto", label: pt("nav.contact") },
   ];
 
   return (

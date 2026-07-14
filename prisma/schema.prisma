@@ -66,6 +66,9 @@ model Portfolio {
   // Tema de color del portafolio público
   paletteId String @default("emerald")
 
+  // Idioma del portafolio público
+  language  String @default("es")
+
   // Proyectos
   projects Project[]
 }

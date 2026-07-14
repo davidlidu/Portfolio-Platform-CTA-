@@ -54,6 +54,10 @@ const translations = {
     "basic.draft": "Borrador",
     "basic.palette": "Color de marca del portafolio",
     "basic.palette_hint": "Se aplica en el portafolio público",
+    "basic.language": "Idioma del portafolio público",
+    "basic.language_hint": "Aplica en textos fijos: navbar, footer, sección de proyectos",
+    "basic.language_es": "Español",
+    "basic.language_en": "English",
 
     // Tab WHATSAPP
     "wa.number": "Número de WhatsApp (con código de país, solo dígitos)",
@@ -166,6 +170,10 @@ const translations = {
     "basic.draft": "Draft",
     "basic.palette": "Portfolio brand color",
     "basic.palette_hint": "Applied on the public portfolio",
+    "basic.language": "Public portfolio language",
+    "basic.language_hint": "Applies to fixed texts: navbar, footer, projects section",
+    "basic.language_es": "Español",
+    "basic.language_en": "English",
 
     // Tab WHATSAPP
     "wa.number": "WhatsApp number (with country code, digits only)",
