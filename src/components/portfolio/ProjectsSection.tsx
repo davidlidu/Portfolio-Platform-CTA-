@@ -1,7 +1,7 @@
 // src/components/portfolio/ProjectsSection.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Project } from "@prisma/client";
 import { getPortfolioTranslator, type PortfolioLang } from "@/lib/portfolio-translations";
@@ -22,10 +22,33 @@ function ProjectModal({
 }) {
   const pt = getPortfolioTranslator(language);
   const [currentImage, setCurrentImage] = useState(0);
+
+  // Deduplicar: thumbnail primero, luego galería sin repetir el thumbnail
+  const galleryImages = (project.images ?? []).filter(
+    (url) => url !== project.thumbnailUrl
+  );
   const allImages = [
     ...(project.thumbnailUrl ? [project.thumbnailUrl] : []),
-    ...project.images,
+    ...galleryImages,
   ];
+
+  const total = allImages.length;
+
+  const prev = useCallback(() =>
+    setCurrentImage((i) => (i === 0 ? total - 1 : i - 1)), [total]);
+  const next = useCallback(() =>
+    setCurrentImage((i) => (i === total - 1 ? 0 : i + 1)), [total]);
+
+  // Teclado: ←  → Esc
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") prev();
+      else if (e.key === "ArrowRight") next();
+      else if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [prev, next, onClose]);
 
   return (
     <motion.div
@@ -33,64 +56,97 @@ function ProjectModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
-      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
     >
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.92, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
+        exit={{ scale: 0.92, opacity: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-card border border-card-border rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-auto"
+        className="relative bg-card border border-card-border rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-auto"
       >
-        {/* Galería de imágenes */}
+        {/* Botón cerrar */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 z-10 w-9 h-9 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-colors text-base leading-none"
+          aria-label="Cerrar"
+        >
+          ✕
+        </button>
+
+        {/* Galería */}
         {allImages.length > 0 && (
-          <div className="relative">
-            <img
-              src={allImages[currentImage]}
-              alt={project.title}
-              className="w-full h-64 md:h-80 object-cover rounded-t-2xl"
-            />
-            {allImages.length > 1 && (
-              <>
-                <button
-                  onClick={() =>
-                    setCurrentImage((prev) =>
-                      prev === 0 ? allImages.length - 1 : prev - 1
-                    )
-                  }
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors"
-                >
-                  ←
-                </button>
-                <button
-                  onClick={() =>
-                    setCurrentImage((prev) =>
-                      prev === allImages.length - 1 ? 0 : prev + 1
-                    )
-                  }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors"
-                >
-                  →
-                </button>
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                  {allImages.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrentImage(i)}
-                      className={`w-2 h-2 rounded-full transition-colors ${
-                        i === currentImage ? "bg-accent" : "bg-white/30"
-                      }`}
+          <div className="flex flex-col">
+            {/* Imagen principal */}
+            <div className="relative bg-black rounded-t-2xl overflow-hidden" style={{ minHeight: "260px" }}>
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={allImages[currentImage]}
+                  src={allImages[currentImage]}
+                  alt={`${project.title} — ${currentImage + 1}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-full object-contain"
+                  style={{ maxHeight: "420px" }}
+                />
+              </AnimatePresence>
+
+              {/* Flechas de navegación */}
+              {total > 1 && (
+                <>
+                  <button
+                    onClick={prev}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/70 hover:bg-black text-white rounded-full flex items-center justify-center transition-colors border border-white/10 text-lg"
+                    aria-label="Anterior"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    onClick={next}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/70 hover:bg-black text-white rounded-full flex items-center justify-center transition-colors border border-white/10 text-lg"
+                    aria-label="Siguiente"
+                  >
+                    ›
+                  </button>
+
+                  {/* Contador */}
+                  <span className="absolute bottom-3 right-3 bg-black/70 text-white text-xs font-semibold px-2.5 py-1 rounded-full tabular-nums">
+                    {currentImage + 1} / {total}
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Tira de miniaturas */}
+            {total > 1 && (
+              <div className="flex gap-2 p-3 overflow-x-auto bg-[#111] border-b border-card-border">
+                {allImages.map((url, i) => (
+                  <button
+                    key={url + i}
+                    onClick={() => setCurrentImage(i)}
+                    className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+                      i === currentImage
+                        ? "border-accent scale-[1.06] shadow-lg shadow-accent/20"
+                        : "border-transparent hover:border-white/30 opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <img
+                      src={url}
+                      alt={`miniatura ${i + 1}`}
+                      className="w-full h-full object-cover"
                     />
-                  ))}
-                </div>
-              </>
+                  </button>
+                ))}
+              </div>
             )}
           </div>
         )}
 
         {/* Contenido */}
-        <div className="p-8">
+        <div className="p-6 md:p-8">
           <h3 className="font-playfair text-2xl font-bold text-white mb-3">
             {project.title}
           </h3>
@@ -116,20 +172,10 @@ function ProjectModal({
               className="inline-flex items-center gap-2 text-accent font-semibold text-sm hover:underline group/link"
             >
               {pt("projects.view_full")}
-              <span className="group-hover/link:translate-x-1 transition-transform">
-                →
-              </span>
+              <span className="group-hover/link:translate-x-1 transition-transform">→</span>
             </a>
           )}
         </div>
-
-        {/* Cerrar */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors text-lg"
-        >
-          ✕
-        </button>
       </motion.div>
     </motion.div>
   );
@@ -188,6 +234,13 @@ export default function ProjectsSection({ projects, language }: ProjectsSectionP
                 <div className="w-full h-full bg-[#161616] flex items-center justify-center">
                   <span className="text-text-dim/30 text-4xl">◎</span>
                 </div>
+              )}
+              {/* Badge de fotos si tiene galería */}
+              {(project.images ?? []).length > 0 && (
+                <span className="absolute top-3 right-3 bg-black/70 text-white text-[11px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <span>◧</span>
+                  {(project.images ?? []).length + (project.thumbnailUrl ? 1 : 0)}
+                </span>
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
                 <span className="text-white text-sm font-medium">
