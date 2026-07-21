@@ -71,6 +71,9 @@ model Portfolio {
 
   // Proyectos
   projects Project[]
+
+  // Leads capturados por el formulario de acceso
+  leads Lead[]
 }
 
 model Project {
@@ -88,4 +91,20 @@ model Project {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Lead {
+  id          String    @id @default(cuid())
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  fullName    String // Nombre completo ingresado
+  contact     String // Valor crudo ingresado (celular o correo)
+  email       String? // Correo detectado (si aplica)
+  phone       String? // Celular detectado (si aplica)
+  contactType String  @default("unknown") // "email" | "phone" | "unknown"
+
+  createdAt DateTime @default(now())
+
+  @@index([portfolioId, createdAt])
 }

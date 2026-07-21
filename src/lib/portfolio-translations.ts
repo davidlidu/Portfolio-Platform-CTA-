@@ -22,6 +22,18 @@ const portfolioTranslations = {
 
     // Footer
     "footer.rights": "Todos los derechos reservados.",
+
+    // Formulario de acceso (lead gate)
+    "gate.title": "Antes de continuar",
+    "gate.subtitle": "Déjame tus datos para ver el portafolio.",
+    "gate.name_label": "Nombre completo",
+    "gate.name_placeholder": "Tu nombre completo",
+    "gate.contact_label": "Celular o correo",
+    "gate.contact_placeholder": "Ej: 3001234567 o tu@correo.com",
+    "gate.submit": "Ver portafolio",
+    "gate.submitting": "Enviando...",
+    "gate.error": "No pudimos enviar tus datos. Inténtalo de nuevo.",
+    "gate.privacy": "Usaremos tus datos solo para contactarte.",
   },
   en: {
     // Navbar
@@ -41,6 +53,18 @@ const portfolioTranslations = {
 
     // Footer
     "footer.rights": "All rights reserved.",
+
+    // Access form (lead gate)
+    "gate.title": "Before you continue",
+    "gate.subtitle": "Leave your details to view the portfolio.",
+    "gate.name_label": "Full name",
+    "gate.name_placeholder": "Your full name",
+    "gate.contact_label": "Phone or email",
+    "gate.contact_placeholder": "e.g. +1 555 123 4567 or you@email.com",
+    "gate.submit": "View portfolio",
+    "gate.submitting": "Sending...",
+    "gate.error": "We couldn't send your details. Please try again.",
+    "gate.privacy": "We'll only use your details to contact you.",
   },
 } as const;
 

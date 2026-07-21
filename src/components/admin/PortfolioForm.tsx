@@ -7,6 +7,7 @@ import type { Portfolio, Project } from "@prisma/client";
 import type { Social, ServicePillar } from "@/types";
 import ImageUploader from "./ImageUploader";
 import TagInput from "./TagInput";
+import LeadsPanel from "./LeadsPanel";
 import { useAdmin } from "@/contexts/AdminContext";
 import type { TranslationKey } from "@/lib/translations";
 import { PALETTES } from "@/lib/palettes";
@@ -22,9 +23,9 @@ const SOCIAL_OPTIONS = [
   { value: "web", label: "Web" },
 ];
 
-type Tab = "basic" | "whatsapp" | "socials" | "intro" | "services" | "approach" | "contact";
+type Tab = "basic" | "whatsapp" | "socials" | "intro" | "services" | "approach" | "contact" | "leads";
 
-const TABS: { id: Tab; labelKey: TranslationKey }[] = [
+const TABS: { id: Tab; labelKey: TranslationKey; editOnly?: boolean }[] = [
   { id: "basic", labelKey: "form.tab.basic" },
   { id: "whatsapp", labelKey: "form.tab.whatsapp" },
   { id: "socials", labelKey: "form.tab.socials" },
@@ -32,6 +33,7 @@ const TABS: { id: Tab; labelKey: TranslationKey }[] = [
   { id: "services", labelKey: "form.tab.services" },
   { id: "approach", labelKey: "form.tab.approach" },
   { id: "contact", labelKey: "form.tab.contact" },
+  { id: "leads", labelKey: "form.tab.leads", editOnly: true },
 ];
 
 interface PortfolioFormProps {
@@ -274,7 +276,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
 
       {/* Tabs */}
       <div className="flex gap-1 mb-6 overflow-x-auto border-b border-card-border">
-        {TABS.map((tabItem) => (
+        {TABS.filter((tabItem) => !tabItem.editOnly || (!isNew && portfolio)).map((tabItem) => (
           <button
             key={tabItem.id}
             onClick={() => setTab(tabItem.id)}
@@ -812,9 +814,15 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
             </div>
           </div>
         )}
+
+        {/* TAB: LEADS */}
+        {tab === "leads" && portfolio && (
+          <LeadsPanel portfolioId={portfolio.id} />
+        )}
       </div>
 
-      {/* Sticky footer con acciones */}
+      {/* Sticky footer con acciones (oculto en la pestaña de leads) */}
+      {tab !== "leads" && (
       <div className="sticky bottom-0 bg-bg border-t border-card-border -mx-4 md:-mx-8 px-4 md:px-8 py-4 flex items-center justify-between">
         <div>
           {error && <p className="text-red-400 text-sm">{error}</p>}
@@ -838,6 +846,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
           </button>
         </div>
       </div>
+      )}
 
       {/* Sección de proyectos (solo en edición) */}
       {!isNew && portfolio && (

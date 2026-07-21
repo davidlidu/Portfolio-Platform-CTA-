@@ -16,6 +16,7 @@ import ApproachSection from "@/components/portfolio/ApproachSection";
 import ProjectsSection from "@/components/portfolio/ProjectsSection";
 import ContactSection from "@/components/portfolio/ContactSection";
 import Footer from "@/components/portfolio/Footer";
+import LeadGate from "@/components/portfolio/LeadGate";
 
 // Generar metadata dinámica para SEO
 export async function generateMetadata({
@@ -79,6 +80,13 @@ export default async function PortfolioPage({
     <div className="min-h-screen font-dm bg-bg">
       {/* Aplica la paleta de color del portafolio */}
       <PortfolioTheme paletteId={portfolio.paletteId} />
+
+      {/* Formulario de acceso: captura el lead antes de mostrar el contenido */}
+      <LeadGate
+        portfolioId={portfolio.id}
+        slug={portfolio.slug}
+        language={language}
+      />
 
       {/* Fuentes de Google */}
       <link

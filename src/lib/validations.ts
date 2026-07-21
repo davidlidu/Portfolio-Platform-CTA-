@@ -97,5 +97,20 @@ export const projectSchema = z.object({
   order: z.number().int().default(0),
 });
 
+// Esquema para capturar un lead desde el formulario de acceso público
+export const leadSchema = z.object({
+  fullName: z
+    .string()
+    .trim()
+    .min(2, "El nombre completo es requerido")
+    .max(120),
+  contact: z
+    .string()
+    .trim()
+    .min(3, "Ingresa tu celular o correo")
+    .max(120),
+});
+
 export type PortfolioInput = z.infer<typeof portfolioSchema>;
 export type ProjectInput = z.infer<typeof projectSchema>;
+export type LeadInput = z.infer<typeof leadSchema>;
