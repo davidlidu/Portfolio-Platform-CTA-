@@ -69,11 +69,21 @@ model Portfolio {
   // Idioma del portafolio público
   language  String @default("es")
 
+  // Formulario de acceso (LeadGate): bloquea el contenido hasta capturar datos.
+  // Se puede encender/apagar por portafolio desde la configuración.
+  leadGateEnabled Boolean @default(true)
+
   // Proyectos
   projects Project[]
 
   // Leads capturados por el formulario de acceso
   leads Lead[]
+
+  // Tarjetas NFC asociadas a este portafolio
+  cards NfcCard[]
+
+  // Aperturas / visitas registradas (analítica)
+  visits Visit[]
 }
 
 model Project {
@@ -104,7 +114,54 @@ model Lead {
   phone       String? // Celular detectado (si aplica)
   contactType String  @default("unknown") // "email" | "phone" | "unknown"
 
+  // Atribución: tarjeta NFC y visitante anónimo que generó este lead.
+  cardId    String?
+  card      NfcCard? @relation(fields: [cardId], references: [id], onDelete: SetNull)
+  visitorId String?
+
   createdAt DateTime @default(now())
 
   @@index([portfolioId, createdAt])
+  @@index([cardId])
+}
+
+// Tarjeta NFC física. Su `id` es el token que viaja en la URL grabada
+// (ej. https://dominio/t/<id>). Se generan desde el panel de cada portafolio.
+model NfcCard {
+  id          String    @id @default(cuid())
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  label    String  @default("") // Etiqueta interna, ej. "Tarjeta oficina"
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  visits Visit[]
+  leads  Lead[]
+
+  @@index([portfolioId])
+}
+
+// Apertura registrada del portafolio. cardId != null => llegó por una tarjeta NFC.
+model Visit {
+  id          String    @id @default(cuid())
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  cardId String?
+  card   NfcCard? @relation(fields: [cardId], references: [id], onDelete: SetNull)
+
+  visitorId String? // Cookie anónima para únicos y conversión tap->lead
+  source    String  @default("direct") // "nfc" | "direct"
+  device    String  @default("unknown") // "mobile" | "desktop" | "tablet"
+  os        String?
+  browser   String?
+  referrer  String?
+
+  createdAt DateTime @default(now())
+
+  @@index([portfolioId, createdAt])
+  @@index([cardId])
+  @@index([visitorId])
 }

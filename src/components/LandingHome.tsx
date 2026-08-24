@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
+// Enlace de WhatsApp de contacto de TapHub (botones CTA de la landing).
+const WHATSAPP_URL = "https://wa.me/message/JBJKRI2LYY5YP1";
+
 const COPY = {
   es: {
     navLinks: [
@@ -432,7 +435,7 @@ export default function LandingHome() {
                     <a href="#" className="th-nav-logo">Tap<span>Hub</span></a>
                     <ul className="th-nav-links">
                         {t.navLinks.map(l => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}
-                        <li><a href="#contacto" className="th-nav-cta">{t.navCta}</a></li>
+                        <li><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="th-nav-cta">{t.navCta}</a></li>
                     </ul>
                     <button
                         onClick={() => setLang(lang === "es" ? "en" : "es")}
@@ -613,7 +616,7 @@ export default function LandingHome() {
                                     <ul className="th-plan-features">
                                         {plan.features.map(f => <li key={f}>{f}</li>)}
                                     </ul>
-                                    <a href="#contacto" className={`th-btn-plan ${plan.solid ? "th-btn-plan-solid" : "th-btn-plan-outline"}`}>{plan.cta}</a>
+                                    <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={`th-btn-plan ${plan.solid ? "th-btn-plan-solid" : "th-btn-plan-outline"}`}>{plan.cta}</a>
                                 </div>
                             ))}
                         </div>
@@ -682,7 +685,7 @@ export default function LandingHome() {
                             <div className="th-cta-form">
                                 <input type="text" className="th-cta-input" placeholder={t.ctaInputName} />
                                 <input type="tel" className="th-cta-input" placeholder={t.ctaInputPhone} />
-                                <a href="#" className="th-btn-primary" style={{ whiteSpace: "nowrap" }}>{t.ctaBtn}</a>
+                                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="th-btn-primary" style={{ whiteSpace: "nowrap" }}>{t.ctaBtn}</a>
                             </div>
                             <p className="th-cta-note">{t.ctaNote}</p>
                         </div>

@@ -6,7 +6,10 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
   const portfolios = await prisma.portfolio.findMany({
-    include: { projects: { select: { id: true } } },
+    include: {
+      projects: { select: { id: true } },
+      _count: { select: { visits: true, leads: true } },
+    },
     orderBy: { createdAt: "desc" },
   });
 

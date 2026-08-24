@@ -11,6 +11,7 @@ interface Portfolio {
   slug: string;
   isPublished: boolean;
   projects: { id: string }[];
+  _count: { visits: number; leads: number };
 }
 
 interface DashboardContentProps {
@@ -42,6 +43,36 @@ export default function DashboardContent({ portfolios, baseUrl }: DashboardConte
         </Link>
       </div>
 
+      {/* Resumen global de todas las marcas / tenants */}
+      {portfolios.length > 0 && (
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          {[
+            {
+              label: t("dash.sum.opens"),
+              value: portfolios.reduce((s, p) => s + p._count.visits, 0),
+            },
+            {
+              label: t("dash.sum.leads"),
+              value: portfolios.reduce((s, p) => s + p._count.leads, 0),
+            },
+            {
+              label: t("dash.sum.published"),
+              value: portfolios.filter((p) => p.isPublished).length,
+            },
+          ].map((s) => (
+            <div
+              key={s.label}
+              className="bg-card border border-card-border rounded-2xl p-4 md:p-5"
+            >
+              <p className="text-2xl md:text-3xl font-syne font-extrabold text-white">
+                {s.value}
+              </p>
+              <p className="text-text-dim text-xs mt-1">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Portfolio list */}
       {portfolios.length === 0 ? (
         <div className="bg-card border border-card-border rounded-2xl p-12 text-center">
@@ -66,6 +97,12 @@ export default function DashboardContent({ portfolios, baseUrl }: DashboardConte
                     </th>
                     <th className="text-center px-6 py-4 text-text-dim text-xs font-semibold uppercase tracking-wider">
                       {t("dash.col.projects")}
+                    </th>
+                    <th className="text-center px-6 py-4 text-text-dim text-xs font-semibold uppercase tracking-wider">
+                      {t("dash.col.opens")}
+                    </th>
+                    <th className="text-center px-6 py-4 text-text-dim text-xs font-semibold uppercase tracking-wider">
+                      {t("dash.col.leads")}
                     </th>
                     <th className="text-center px-6 py-4 text-text-dim text-xs font-semibold uppercase tracking-wider">
                       {t("dash.col.status")}
@@ -101,6 +138,12 @@ export default function DashboardContent({ portfolios, baseUrl }: DashboardConte
                       </td>
                       <td className="px-6 py-4 text-center">
                         <span className="text-text-dim text-sm">{p.projects.length}</span>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <span className="text-white text-sm font-medium">{p._count.visits}</span>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <span className="text-white text-sm font-medium">{p._count.leads}</span>
                       </td>
                       <td className="px-6 py-4 text-center">
                         <span
@@ -181,7 +224,8 @@ export default function DashboardContent({ portfolios, baseUrl }: DashboardConte
                     /{p.slug}
                   </a>
                   <span className="text-text-dim text-xs">
-                    {p.projects.length} {t("dash.col.projects").toLowerCase()}
+                    {p._count.visits} {t("dash.col.opens").toLowerCase()} ·{" "}
+                    {p._count.leads} {t("dash.col.leads").toLowerCase()}
                   </span>
                 </div>
 

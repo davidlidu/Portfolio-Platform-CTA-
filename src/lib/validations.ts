@@ -84,6 +84,20 @@ export const portfolioSchema = z.object({
 
   // Idioma del portafolio público
   language: z.enum(["es", "en"]).default("es"),
+
+  // Formulario de acceso (LeadGate) encendido/apagado
+  leadGateEnabled: z.boolean().default(true),
+});
+
+// Esquema para crear/actualizar una tarjeta NFC (panel admin)
+export const nfcCardSchema = z.object({
+  label: z.string().trim().max(80).default(""),
+  isActive: z.boolean().optional(),
+});
+
+// Esquema para registrar una apertura desde el beacon público
+export const visitSchema = z.object({
+  referrer: z.string().max(500).nullish(),
 });
 
 // Esquema para crear/actualizar proyecto
@@ -114,3 +128,5 @@ export const leadSchema = z.object({
 export type PortfolioInput = z.infer<typeof portfolioSchema>;
 export type ProjectInput = z.infer<typeof projectSchema>;
 export type LeadInput = z.infer<typeof leadSchema>;
+export type NfcCardInput = z.infer<typeof nfcCardSchema>;
+export type VisitInput = z.infer<typeof visitSchema>;

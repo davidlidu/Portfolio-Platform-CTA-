@@ -33,6 +33,18 @@ export async function POST(req: NextRequest, { params }: Params) {
 
     const { contactType, email, phone } = parseContact(contact);
 
+    // Atribución: tarjeta NFC y visitante anónimo (cookies puestas al abrir).
+    const rawCardId = req.cookies.get("taphub_card")?.value || null;
+    const visitorId = req.cookies.get("taphub_vid")?.value || null;
+    let cardId: string | null = null;
+    if (rawCardId) {
+      const card = await prisma.nfcCard.findFirst({
+        where: { id: rawCardId, portfolioId: portfolio.id },
+        select: { id: true },
+      });
+      cardId = card?.id ?? null;
+    }
+
     await prisma.lead.create({
       data: {
         portfolioId: portfolio.id,
@@ -41,6 +53,8 @@ export async function POST(req: NextRequest, { params }: Params) {
         email,
         phone,
         contactType,
+        cardId,
+        visitorId,
       },
     });
 

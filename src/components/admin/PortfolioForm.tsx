@@ -8,6 +8,7 @@ import type { Social, ServicePillar } from "@/types";
 import ImageUploader from "./ImageUploader";
 import TagInput from "./TagInput";
 import LeadsPanel from "./LeadsPanel";
+import InsightsPanel from "./InsightsPanel";
 import { useAdmin } from "@/contexts/AdminContext";
 import type { TranslationKey } from "@/lib/translations";
 import { PALETTES } from "@/lib/palettes";
@@ -23,7 +24,7 @@ const SOCIAL_OPTIONS = [
   { value: "web", label: "Web" },
 ];
 
-type Tab = "basic" | "whatsapp" | "socials" | "intro" | "services" | "approach" | "contact" | "leads";
+type Tab = "basic" | "whatsapp" | "socials" | "intro" | "services" | "approach" | "contact" | "leads" | "insights";
 
 const TABS: { id: Tab; labelKey: TranslationKey; editOnly?: boolean }[] = [
   { id: "basic", labelKey: "form.tab.basic" },
@@ -34,6 +35,7 @@ const TABS: { id: Tab; labelKey: TranslationKey; editOnly?: boolean }[] = [
   { id: "approach", labelKey: "form.tab.approach" },
   { id: "contact", labelKey: "form.tab.contact" },
   { id: "leads", labelKey: "form.tab.leads", editOnly: true },
+  { id: "insights", labelKey: "form.tab.insights", editOnly: true },
 ];
 
 interface PortfolioFormProps {
@@ -81,6 +83,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
     footerName: portfolio?.footerName || "",
     paletteId: portfolio?.paletteId || "emerald",
     language: (portfolio?.language as "es" | "en") || "es",
+    leadGateEnabled: portfolio?.leadGateEnabled ?? true,
   });
 
   // Auto-generar slug desde el nombre
@@ -377,6 +380,32 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
               <span className="text-sm text-text-main">
                 {form.isPublished ? t("basic.published") : t("basic.draft")}
               </span>
+            </div>
+
+            {/* Formulario de acceso (LeadGate) */}
+            <div className="border-t border-card-border pt-6">
+              <label className={labelClass}>{t("basic.leadgate")}</label>
+              <p className="text-text-dim text-xs mb-4">
+                {t("basic.leadgate_hint")}
+              </p>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() =>
+                    updateForm("leadGateEnabled", !form.leadGateEnabled)
+                  }
+                  className={`relative w-12 h-6 rounded-full transition-colors ${form.leadGateEnabled ? "bg-accent" : "bg-[#2A2A2A]"}`}
+                >
+                  <span
+                    className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${form.leadGateEnabled ? "translate-x-6" : ""}`}
+                  />
+                </button>
+                <span className="text-sm text-text-main">
+                  {form.leadGateEnabled
+                    ? t("basic.leadgate_on")
+                    : t("basic.leadgate_off")}
+                </span>
+              </div>
             </div>
 
             {/* Idioma del portafolio */}
@@ -819,10 +848,15 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
         {tab === "leads" && portfolio && (
           <LeadsPanel portfolioId={portfolio.id} />
         )}
+
+        {/* TAB: INSIGHTS */}
+        {tab === "insights" && portfolio && (
+          <InsightsPanel portfolioId={portfolio.id} />
+        )}
       </div>
 
-      {/* Sticky footer con acciones (oculto en la pestaña de leads) */}
-      {tab !== "leads" && (
+      {/* Sticky footer con acciones (oculto en paneles de solo lectura) */}
+      {tab !== "leads" && tab !== "insights" && (
       <div className="sticky bottom-0 bg-bg border-t border-card-border -mx-4 md:-mx-8 px-4 md:px-8 py-4 flex items-center justify-between">
         <div>
           {error && <p className="text-red-400 text-sm">{error}</p>}
