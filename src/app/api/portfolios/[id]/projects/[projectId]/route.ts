@@ -2,18 +2,17 @@
 // PUT, DELETE para un proyecto específico
 
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { projectSchema } from "@/lib/validations";
+import { getSessionUser, canAccessPortfolio } from "@/lib/access";
 
 interface Params {
   params: { id: string; projectId: string };
 }
 
 export async function PUT(req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  const user = await getSessionUser();
+  if (!canAccessPortfolio(user, params.id)) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
@@ -49,8 +48,8 @@ export async function PUT(req: NextRequest, { params }: Params) {
 }
 
 export async function DELETE(_req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  const user = await getSessionUser();
+  if (!canAccessPortfolio(user, params.id)) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 

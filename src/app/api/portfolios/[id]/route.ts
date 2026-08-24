@@ -2,18 +2,17 @@
 // GET, PUT, DELETE para un portafolio específico
 
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { portfolioSchema } from "@/lib/validations";
+import { getSessionUser, isAdmin, canAccessPortfolio } from "@/lib/access";
 
 interface Params {
   params: { id: string };
 }
 
 export async function GET(_req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  const user = await getSessionUser();
+  if (!canAccessPortfolio(user, params.id)) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
@@ -41,8 +40,8 @@ export async function GET(_req: NextRequest, { params }: Params) {
 }
 
 export async function PUT(req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  const user = await getSessionUser();
+  if (!canAccessPortfolio(user, params.id)) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
@@ -89,8 +88,9 @@ export async function PUT(req: NextRequest, { params }: Params) {
 }
 
 export async function DELETE(_req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  // Eliminar un portafolio es exclusivo del admin global.
+  const user = await getSessionUser();
+  if (!isAdmin(user)) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 

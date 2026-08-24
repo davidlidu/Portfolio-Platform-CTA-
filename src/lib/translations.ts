@@ -88,6 +88,25 @@ const translations = {
     "insights.col_opens": "Aperturas",
     "insights.col_leads": "Leads",
 
+    // Tab USUARIOS
+    "form.tab.users": "Usuarios",
+    "users.hint": "Invita usuarios que solo podrán editar este portafolio. Reciben un correo para crear su contraseña.",
+    "users.invite_email": "Correo del usuario",
+    "users.invite_name": "Nombre (opcional)",
+    "users.invite_btn": "Invitar",
+    "users.loading": "Cargando usuarios...",
+    "users.error": "No se pudieron cargar los usuarios.",
+    "users.empty": "Aún no hay usuarios con acceso.",
+    "users.status_active": "Activo",
+    "users.status_pending": "Pendiente",
+    "users.resend": "Reenviar",
+    "users.delete": "Quitar",
+    "users.delete_confirm": "¿Quitar el acceso de este usuario?",
+    "users.emailed": "Invitación enviada por correo.",
+    "users.link_manual": "Comparte este enlace de invitación:",
+    "users.copy": "Copiar",
+    "users.copied": "¡Copiado!",
+
     // Tab BÁSICO
     "basic.heroName": "Nombre completo (usa Enter para saltos)",
     "basic.slug": "Slug / URL",
@@ -253,6 +272,25 @@ const translations = {
     "insights.col_card": "Card",
     "insights.col_opens": "Opens",
     "insights.col_leads": "Leads",
+
+    // Tab USERS
+    "form.tab.users": "Users",
+    "users.hint": "Invite users who can only edit this portfolio. They get an email to set their password.",
+    "users.invite_email": "User email",
+    "users.invite_name": "Name (optional)",
+    "users.invite_btn": "Invite",
+    "users.loading": "Loading users...",
+    "users.error": "Couldn't load users.",
+    "users.empty": "No users with access yet.",
+    "users.status_active": "Active",
+    "users.status_pending": "Pending",
+    "users.resend": "Resend",
+    "users.delete": "Remove",
+    "users.delete_confirm": "Remove this user's access?",
+    "users.emailed": "Invitation sent by email.",
+    "users.link_manual": "Share this invitation link:",
+    "users.copy": "Copy",
+    "users.copied": "Copied!",
 
     // Tab BASIC
     "basic.heroName": "Full name (use Enter for line breaks)",

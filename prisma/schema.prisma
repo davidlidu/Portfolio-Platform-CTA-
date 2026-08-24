@@ -84,6 +84,32 @@ model Portfolio {
 
   // Aperturas / visitas registradas (analítica)
   visits Visit[]
+
+  // Usuarios con acceso a editar este portafolio
+  users User[]
+}
+
+// Usuario con acceso al panel. role "admin" = acceso global (no usa DB, viene
+// del entorno); en DB solo guardamos usuarios de portafolio (role "portfolio")
+// que solo pueden editar su propio portafolio. Se crean por invitación.
+model User {
+  id           String  @id @default(cuid())
+  email        String  @unique
+  name         String?
+  passwordHash String? // null hasta que acepta la invitación
+  role         String  @default("portfolio") // "admin" | "portfolio"
+
+  portfolioId String?
+  portfolio   Portfolio? @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  // Invitación pendiente
+  inviteToken   String?   @unique
+  inviteExpires DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([portfolioId])
 }
 
 model Project {

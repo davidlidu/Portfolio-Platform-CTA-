@@ -9,6 +9,7 @@ import ImageUploader from "./ImageUploader";
 import TagInput from "./TagInput";
 import LeadsPanel from "./LeadsPanel";
 import InsightsPanel from "./InsightsPanel";
+import UsersPanel from "./UsersPanel";
 import { useAdmin } from "@/contexts/AdminContext";
 import type { TranslationKey } from "@/lib/translations";
 import { PALETTES } from "@/lib/palettes";
@@ -24,9 +25,9 @@ const SOCIAL_OPTIONS = [
   { value: "web", label: "Web" },
 ];
 
-type Tab = "basic" | "whatsapp" | "socials" | "intro" | "services" | "approach" | "contact" | "leads" | "insights";
+type Tab = "basic" | "whatsapp" | "socials" | "intro" | "services" | "approach" | "contact" | "leads" | "insights" | "users";
 
-const TABS: { id: Tab; labelKey: TranslationKey; editOnly?: boolean }[] = [
+const TABS: { id: Tab; labelKey: TranslationKey; editOnly?: boolean; adminOnly?: boolean }[] = [
   { id: "basic", labelKey: "form.tab.basic" },
   { id: "whatsapp", labelKey: "form.tab.whatsapp" },
   { id: "socials", labelKey: "form.tab.socials" },
@@ -36,14 +37,16 @@ const TABS: { id: Tab; labelKey: TranslationKey; editOnly?: boolean }[] = [
   { id: "contact", labelKey: "form.tab.contact" },
   { id: "leads", labelKey: "form.tab.leads", editOnly: true },
   { id: "insights", labelKey: "form.tab.insights", editOnly: true },
+  { id: "users", labelKey: "form.tab.users", editOnly: true, adminOnly: true },
 ];
 
 interface PortfolioFormProps {
   portfolio?: Portfolio & { projects: Project[] };
   isNew?: boolean;
+  isAdmin?: boolean;
 }
 
-export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFormProps) {
+export default function PortfolioForm({ portfolio, isNew = false, isAdmin = false }: PortfolioFormProps) {
   const router = useRouter();
   const { t } = useAdmin();
   const [tab, setTab] = useState<Tab>("basic");
@@ -266,7 +269,7 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
           )}
         </div>
         <div className="flex items-center gap-3">
-          {!isNew && (
+          {!isNew && isAdmin && (
             <button
               onClick={handleDelete}
               className="px-4 py-2 text-sm text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
@@ -279,7 +282,11 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
 
       {/* Tabs */}
       <div className="flex gap-1 mb-6 overflow-x-auto border-b border-card-border">
-        {TABS.filter((tabItem) => !tabItem.editOnly || (!isNew && portfolio)).map((tabItem) => (
+        {TABS.filter(
+          (tabItem) =>
+            (!tabItem.editOnly || (!isNew && portfolio)) &&
+            (!tabItem.adminOnly || isAdmin)
+        ).map((tabItem) => (
           <button
             key={tabItem.id}
             onClick={() => setTab(tabItem.id)}
@@ -853,10 +860,15 @@ export default function PortfolioForm({ portfolio, isNew = false }: PortfolioFor
         {tab === "insights" && portfolio && (
           <InsightsPanel portfolioId={portfolio.id} />
         )}
+
+        {/* TAB: USUARIOS (solo admin) */}
+        {tab === "users" && portfolio && isAdmin && (
+          <UsersPanel portfolioId={portfolio.id} />
+        )}
       </div>
 
       {/* Sticky footer con acciones (oculto en paneles de solo lectura) */}
-      {tab !== "leads" && tab !== "insights" && (
+      {tab !== "leads" && tab !== "insights" && tab !== "users" && (
       <div className="sticky bottom-0 bg-bg border-t border-card-border -mx-4 md:-mx-8 px-4 md:px-8 py-4 flex items-center justify-between">
         <div>
           {error && <p className="text-red-400 text-sm">{error}</p>}

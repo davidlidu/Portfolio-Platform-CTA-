@@ -2,14 +2,14 @@
 // GET: listar portafolios | POST: crear portafolio
 
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { portfolioSchema } from "@/lib/validations";
+import { getSessionUser, isAdmin } from "@/lib/access";
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  // Solo el admin global ve el listado completo de portafolios.
+  const user = await getSessionUser();
+  if (!isAdmin(user)) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
@@ -30,8 +30,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  // Crear portafolios es exclusivo del admin global.
+  const user = await getSessionUser();
+  if (!isAdmin(user)) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 

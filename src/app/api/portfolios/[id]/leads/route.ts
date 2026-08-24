@@ -3,11 +3,10 @@
 // GET protegido: lista los leads del portafolio para el panel admin.
 
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { leadSchema } from "@/lib/validations";
 import { parseContact } from "@/lib/leads";
+import { getSessionUser, canAccessPortfolio } from "@/lib/access";
 
 interface Params {
   params: { id: string };
@@ -74,10 +73,10 @@ export async function POST(req: NextRequest, { params }: Params) {
   }
 }
 
-// Listar leads (solo admin)
+// Listar leads (admin o dueño del portafolio)
 export async function GET(_req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  const user = await getSessionUser();
+  if (!canAccessPortfolio(user, params.id)) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 

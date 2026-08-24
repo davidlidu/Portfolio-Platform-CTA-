@@ -125,6 +125,21 @@ export const leadSchema = z.object({
     .max(120),
 });
 
+// Invitar un usuario a un portafolio (admin)
+export const inviteSchema = z.object({
+  email: z.string().trim().toLowerCase().email("Correo inválido"),
+  name: z.string().trim().max(120).optional(),
+});
+
+// Aceptar invitación y fijar contraseña
+export const acceptInviteSchema = z.object({
+  token: z.string().min(10),
+  password: z
+    .string()
+    .min(8, "La contraseña debe tener al menos 8 caracteres")
+    .max(200),
+});
+
 export type PortfolioInput = z.infer<typeof portfolioSchema>;
 export type ProjectInput = z.infer<typeof projectSchema>;
 export type LeadInput = z.infer<typeof leadSchema>;

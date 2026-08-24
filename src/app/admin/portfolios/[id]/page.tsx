@@ -1,7 +1,8 @@
 // src/app/admin/portfolios/[id]/page.tsx
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import PortfolioForm from "@/components/admin/PortfolioForm";
+import { getSessionUser, isAdmin, canAccessPortfolio } from "@/lib/access";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +11,14 @@ export default async function EditPortfolioPage({
 }: {
   params: { id: string };
 }) {
+  const user = await getSessionUser();
+  if (!user) redirect("/admin/login");
+
+  // Defensa en profundidad (además del middleware): sin acceso, fuera.
+  if (!canAccessPortfolio(user, params.id)) {
+    redirect(user.portfolioId ? `/admin/portfolios/${user.portfolioId}` : "/admin/login");
+  }
+
   const portfolio = await prisma.portfolio.findUnique({
     where: { id: params.id },
     include: { projects: { orderBy: { order: "asc" } } },
@@ -19,5 +28,5 @@ export default async function EditPortfolioPage({
     notFound();
   }
 
-  return <PortfolioForm portfolio={portfolio} />;
+  return <PortfolioForm portfolio={portfolio} isAdmin={isAdmin(user)} />;
 }

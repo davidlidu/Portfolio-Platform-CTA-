@@ -4,11 +4,10 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { visitSchema } from "@/lib/validations";
 import { parseUserAgent } from "@/lib/useragent";
+import { getSessionUser, canAccessPortfolio } from "@/lib/access";
 
 interface Params {
   params: { id: string };
@@ -87,10 +86,10 @@ export async function POST(req: NextRequest, { params }: Params) {
   }
 }
 
-// Analítica agregada (solo admin)
+// Analítica agregada (admin o dueño del portafolio)
 export async function GET(_req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  const user = await getSessionUser();
+  if (!canAccessPortfolio(user, params.id)) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
