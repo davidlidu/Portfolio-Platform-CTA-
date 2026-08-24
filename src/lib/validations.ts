@@ -36,14 +36,16 @@ export const portfolioSchema = z.object({
   // Hero
   heroName: z.string().min(1, "El nombre es requerido"),
   heroBadge: z.string().default("Disponible para proyectos"),
-  heroRole: z.string().min(1, "El rol es requerido"),
+  // El resto de campos son opcionales: se puede crear un portafolio solo con el
+  // nombre y completarlo después (o dejar que el usuario asignado lo termine).
+  heroRole: z.string().default(""),
   heroPhotoUrl: z.string().nullable().optional(),
 
   // Socials
   socials: z.array(socialSchema).max(6).default([]),
 
   // Intro
-  introQuote: z.string().min(1, "La frase principal es requerida"),
+  introQuote: z.string().default(""),
   introTags: z.array(z.string()).default([]),
   introCta1Label: z.string().default("Agendar conversación"),
   introCta2Label: z.string().default("Explorar proyectos"),
@@ -51,19 +53,19 @@ export const portfolioSchema = z.object({
   // Servicios
   servicesLabel: z.string().default("// Servicios"),
   servicesTitle: z.string().default("Cómo genero valor"),
-  servicesDescription: z.string().min(1, "La descripción de servicios es requerida"),
+  servicesDescription: z.string().default(""),
   servicePillars: z.array(pillarSchema).max(3).default([]),
 
   // Enfoque
   approachLabel: z.string().default("// Mi enfoque"),
-  approachTitle: z.string().min(1, "El título de enfoque es requerido"),
-  approachDescription: z.string().min(1, "La descripción de enfoque es requerida"),
+  approachTitle: z.string().default(""),
+  approachDescription: z.string().default(""),
   approachSteps: z.array(z.string()).max(6).default([]),
 
   // Contacto
   contactLabel: z.string().default("// Conectemos"),
   contactTitle: z.string().default("¿Tienes un proyecto en mente?"),
-  contactDescription: z.string().min(1, "La descripción de contacto es requerida"),
+  contactDescription: z.string().default(""),
   contactCta1Label: z.string().default("Agendar conversación"),
   contactCta2Label: z.string().default("Guardar contacto"),
 
@@ -77,7 +79,7 @@ export const portfolioSchema = z.object({
 
   // Footer
   footerInitials: z.string().default("JP"),
-  footerName: z.string().min(1, "El nombre del footer es requerido"),
+  footerName: z.string().default(""),
 
   // Tema de color
   paletteId: z.string().default("emerald"),
