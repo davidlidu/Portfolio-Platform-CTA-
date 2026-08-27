@@ -87,6 +87,8 @@ export default function PortfolioForm({ portfolio, isNew = false, isAdmin = fals
     paletteId: portfolio?.paletteId || "emerald",
     language: (portfolio?.language as "es" | "en") || "es",
     leadGateEnabled: portfolio?.leadGateEnabled ?? true,
+    ghlEnabled: portfolio?.ghlEnabled ?? false,
+    ghlTag: portfolio?.ghlTag || "",
   });
 
   // Auto-generar slug desde el nombre
@@ -413,6 +415,42 @@ export default function PortfolioForm({ portfolio, isNew = false, isAdmin = fals
                     : t("basic.leadgate_off")}
                 </span>
               </div>
+            </div>
+
+            {/* Vinculación a GoHighLevel (GHL) */}
+            <div className="border-t border-card-border pt-6">
+              <label className={labelClass}>{t("basic.ghl")}</label>
+              <p className="text-text-dim text-xs mb-4">{t("basic.ghl_hint")}</p>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => updateForm("ghlEnabled", !form.ghlEnabled)}
+                  className={`relative w-12 h-6 rounded-full transition-colors ${form.ghlEnabled ? "bg-accent" : "bg-[#2A2A2A]"}`}
+                >
+                  <span
+                    className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${form.ghlEnabled ? "translate-x-6" : ""}`}
+                  />
+                </button>
+                <span className="text-sm text-text-main">
+                  {form.ghlEnabled ? t("basic.ghl_on") : t("basic.ghl_off")}
+                </span>
+              </div>
+
+              {form.ghlEnabled && (
+                <div className="mt-4">
+                  <label className={labelClass}>{t("basic.ghl_tag")}</label>
+                  <p className="text-text-dim text-xs mb-2">
+                    {t("basic.ghl_tag_hint")}
+                  </p>
+                  <input
+                    type="text"
+                    value={form.ghlTag}
+                    onChange={(e) => updateForm("ghlTag", e.target.value)}
+                    placeholder={form.slug || "portfolio-slug"}
+                    className={inputClass}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Idioma del portafolio */}

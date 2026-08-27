@@ -89,6 +89,11 @@ export const portfolioSchema = z.object({
 
   // Formulario de acceso (LeadGate) encendido/apagado
   leadGateEnabled: z.boolean().default(true),
+
+  // Integración GoHighLevel (GHL): envío de leads encendido/apagado por
+  // portafolio, y el identificador (tag + campo personalizado) que se envía.
+  ghlEnabled: z.boolean().default(false),
+  ghlTag: z.string().trim().max(80).nullable().optional(),
 });
 
 // Esquema para crear/actualizar una tarjeta NFC (panel admin)

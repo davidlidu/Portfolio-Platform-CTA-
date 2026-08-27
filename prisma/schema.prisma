@@ -73,6 +73,16 @@ model Portfolio {
   // Se puede encender/apagar por portafolio desde la configuración.
   leadGateEnabled Boolean @default(true)
 
+  // Integración con GoHighLevel (GHL): al capturar un lead se crea/actualiza
+  // el contacto en GHL con un tag y un campo personalizado (el identificador
+  // del portafolio) para disparar automatizaciones dentro de GHL. La conexión
+  // (credenciales) es global y vive en variables de entorno; este toggle
+  // enciende/apaga el envío por portafolio.
+  ghlEnabled Boolean @default(false)
+  // Identificador que se envía a GHL como tag y como campo personalizado.
+  // Si queda vacío se usa el `slug` del portafolio.
+  ghlTag String?
+
   // Proyectos
   projects Project[]
 

@@ -5,20 +5,30 @@
 
 import nodemailer from "nodemailer";
 
+// Acepta SMTP_PASSWORD o SMTP_PASS (nombres usados indistintamente en el entorno).
+function getSmtpPass(): string | undefined {
+  return process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
+}
+
 export function isMailConfigured(): boolean {
-  return Boolean(process.env.SMTP_USER && process.env.SMTP_PASSWORD);
+  return Boolean(process.env.SMTP_USER && getSmtpPass());
 }
 
 function getTransport() {
   const host = process.env.SMTP_HOST || "smtp.gmail.com";
   const port = Number(process.env.SMTP_PORT || 465);
+  // Si SMTP_SECURE está definido, se respeta; si no, se deriva del puerto.
+  const secure =
+    process.env.SMTP_SECURE !== undefined
+      ? process.env.SMTP_SECURE === "true"
+      : port === 465; // 465 = SSL, 587 = STARTTLS
   return nodemailer.createTransport({
     host,
     port,
-    secure: port === 465, // 465 = SSL, 587 = STARTTLS
+    secure,
     auth: {
       user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD,
+      pass: getSmtpPass(),
     },
   });
 }

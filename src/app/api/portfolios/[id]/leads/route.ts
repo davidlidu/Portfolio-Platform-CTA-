@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { leadSchema } from "@/lib/validations";
 import { parseContact } from "@/lib/leads";
 import { getSessionUser, canAccessPortfolio } from "@/lib/access";
+import { isGhlConfigured, upsertGhlContact } from "@/lib/ghl";
 
 interface Params {
   params: { id: string };
@@ -21,7 +22,7 @@ export async function POST(req: NextRequest, { params }: Params) {
     // Verificar que el portafolio exista y esté publicado
     const portfolio = await prisma.portfolio.findUnique({
       where: { id: params.id, isPublished: true },
-      select: { id: true },
+      select: { id: true, slug: true, ghlEnabled: true, ghlTag: true },
     });
     if (!portfolio) {
       return NextResponse.json(
@@ -56,6 +57,22 @@ export async function POST(req: NextRequest, { params }: Params) {
         visitorId,
       },
     });
+
+    // Envío a GoHighLevel (best-effort): solo si el portafolio lo tiene activado
+    // y las credenciales globales están configuradas. Nunca rompe la captura.
+    if (portfolio.ghlEnabled && isGhlConfigured()) {
+      const identifier = portfolio.ghlTag?.trim() || portfolio.slug;
+      const result = await upsertGhlContact({
+        fullName,
+        email,
+        phone,
+        identifier,
+        source: "Portfolio lead form",
+      });
+      if (!result.ok) {
+        console.error("Error al enviar lead a GHL:", result.status, result.error);
+      }
+    }
 
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error: any) {

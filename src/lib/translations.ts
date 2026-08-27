@@ -127,6 +127,12 @@ const translations = {
     "basic.leadgate_hint": "Bloquea el contenido hasta que el visitante deja su nombre y contacto",
     "basic.leadgate_on": "Activado",
     "basic.leadgate_off": "Desactivado",
+    "basic.ghl": "Vincular a GoHighLevel (GHL)",
+    "basic.ghl_hint": "Envía cada lead capturado a GHL con un tag y un campo personalizado para disparar automatizaciones",
+    "basic.ghl_on": "Vinculado",
+    "basic.ghl_off": "Sin vincular",
+    "basic.ghl_tag": "Identificador (tag / campo en GHL)",
+    "basic.ghl_tag_hint": "Se envía como tag y campo personalizado. Si lo dejas vacío se usa el slug del portafolio.",
 
     // Tab WHATSAPP
     "wa.number": "Número de WhatsApp (con código de país, solo dígitos)",
@@ -312,6 +318,12 @@ const translations = {
     "basic.leadgate_hint": "Blocks the content until the visitor leaves their name and contact",
     "basic.leadgate_on": "Enabled",
     "basic.leadgate_off": "Disabled",
+    "basic.ghl": "Link to GoHighLevel (GHL)",
+    "basic.ghl_hint": "Sends every captured lead to GHL with a tag and a custom field to trigger automations",
+    "basic.ghl_on": "Linked",
+    "basic.ghl_off": "Not linked",
+    "basic.ghl_tag": "Identifier (tag / field in GHL)",
+    "basic.ghl_tag_hint": "Sent as a tag and a custom field. Leave empty to use the portfolio slug.",
 
     // Tab WHATSAPP
     "wa.number": "WhatsApp number (with country code, digits only)",
