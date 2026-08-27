@@ -21,6 +21,10 @@ const GHL_BASE_URL = "https://services.leadconnectorhq.com";
 const UPSERT_ENDPOINT = `${GHL_BASE_URL}/contacts/upsert`;
 const DEFAULT_API_VERSION = "2021-07-28";
 const DEFAULT_FIELD_KEY = "portfolio_slug";
+// Tag que se envía SIEMPRE, en todos los portafolios, además del identificador
+// propio de cada uno. Sirve para automatizaciones globales de todos los leads de
+// TapHub. Se puede sobrescribir con GHL_DEFAULT_TAG.
+const DEFAULT_TAG = "taphub-lead";
 const REQUEST_TIMEOUT_MS = 8000;
 
 // ¿Están configuradas las credenciales globales de GHL?
@@ -55,6 +59,10 @@ export async function upsertGhlContact(
 
   const apiVersion = process.env.GHL_API_VERSION || DEFAULT_API_VERSION;
   const fieldKey = process.env.GHL_PORTFOLIO_FIELD_KEY || DEFAULT_FIELD_KEY;
+  const defaultTag = process.env.GHL_DEFAULT_TAG || DEFAULT_TAG;
+
+  // Tag global + identificador del portafolio (sin duplicados si coinciden).
+  const tags = Array.from(new Set([defaultTag, input.identifier].filter(Boolean)));
 
   // Cuerpo del upsert. GHL localiza el contacto por email/phone dentro de la
   // location; enviamos lo que tengamos. El tag y el campo personalizado llevan
@@ -62,7 +70,7 @@ export async function upsertGhlContact(
   const body: Record<string, unknown> = {
     locationId: process.env.GHL_LOCATION_ID,
     name: input.fullName,
-    tags: [input.identifier],
+    tags,
     customFields: [{ key: fieldKey, field_value: input.identifier }],
     source: input.source || "Portfolio lead form",
   };
